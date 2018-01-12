@@ -1,0 +1,7 @@
+#Items
+#Blocks
+tile.som.testspawner.name=Test Spawner
+
+#messages
+message.som.spawn_lvl=False Player Level: %d
+message.som.spawning=Spawning new mob, player level in: %d
