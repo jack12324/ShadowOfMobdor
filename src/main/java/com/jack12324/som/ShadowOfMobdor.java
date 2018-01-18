@@ -8,10 +8,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = ShadowOfMobdor.MODID, name = ShadowOfMobdor.MODNAME, version = ShadowOfMobdor.MODVERSION, dependencies = "required-after:Forge@[11.16.0.1865,)", useMetadata = true)
+@Mod(modid = ShadowOfMobdor.MODID, name = ShadowOfMobdor.MODNAME, version = ShadowOfMobdor.MODVERSION, useMetadata = true)
 public class ShadowOfMobdor {
 
-    public static final String MODID = "SoM";
+    public static final String MODID = "som";
     public static final String MODNAME = "Shadow of Mobdor";
     public static final String MODVERSION = "0.0.1";
 
@@ -27,6 +27,7 @@ public class ShadowOfMobdor {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         proxy.preInit(event);
+
     }
 
     @Mod.EventHandler

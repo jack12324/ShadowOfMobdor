@@ -9,7 +9,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class SoMBlocks {
     @GameRegistry.ObjectHolder("som:testspawner")
-    public static BlockTestSpawner testSpawner;
+    public static BlockTestSpawner testSpawner = new BlockTestSpawner();
 
     @SideOnly(Side.CLIENT)
     public static void initModels() {

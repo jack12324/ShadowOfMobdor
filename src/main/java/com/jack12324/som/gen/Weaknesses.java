@@ -3,7 +3,7 @@ package com.jack12324.som.gen;
 import net.minecraft.util.DamageSource;
 
 public enum Weaknesses {
-    IRE("fire", DamageSource.LAVA),
+    FIRE("fire", DamageSource.LAVA),
     WATER("water", DamageSource.DROWN),
     SWORD("sword", new DamageSource("sword")),
     AXE("axe", new DamageSource("axe")),

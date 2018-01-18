@@ -1,5 +1,6 @@
 package com.jack12324.som.entity;
 
+import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.gen.*;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,6 +11,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
@@ -24,6 +29,9 @@ public class EntitySoMZombie extends EntityZombie {
     private SoMClass mobClass;
     private ArrayList<Weaknesses> mobWk = new ArrayList<>();
     private ArrayList<Invulnerabilities> mobInv = new ArrayList<>();
+    private String name;
+    public static final ResourceLocation LOOT = new ResourceLocation(ShadowOfMobdor.MODID, "entities/zombie");
+    public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);
 
     public ArrayList<Weaknesses> getMobWk() {
         return mobWk;
@@ -40,7 +48,23 @@ public class EntitySoMZombie extends EntityZombie {
         this.mobClass = StatGeneration.rollClass();
         mobWk = StatGeneration.rollWeaknesses(this.tier.weaknessRolls(), this.mobWk);
         mobInv = StatGeneration.rollInvulnerabilities(this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
+        this.name = StatGeneration.generateName(mobInv);
 
+    }
+
+    public int getTextureNumber() {
+        return this.dataManager.get(TEXTURE_NUM);
+    }
+
+    public void setTextureNum(int num) {
+        this.dataManager.set(TEXTURE_NUM, num);
+    }
+
+    @Override
+    protected void entityInit() {
+        int num = 0; //todo use to change texture
+        super.entityInit();
+        this.dataManager.register(TEXTURE_NUM, num);
     }
 
     @Override
@@ -97,6 +121,7 @@ public class EntitySoMZombie extends EntityZombie {
         return super.getDropItem();
     }
 
+
     @Nullable
     @Override
     protected ResourceLocation getLootTable() {
@@ -112,7 +137,7 @@ public class EntitySoMZombie extends EntityZombie {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
 
-        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEquipmentBasedOnDifficulty(difficulty);//todo edit for this mod
         this.setEnchantmentBasedOnDifficulty(difficulty);//todo make methods for level also
 
         applyModifiers();
@@ -194,6 +219,7 @@ public class EntitySoMZombie extends EntityZombie {
 
 
     public void print() {
+        System.out.printf("%-10s %s\n", "Name:", this.name);
         System.out.printf("%-10s %3d\n", "Level:", this.level);
         System.out.printf("%-10s %10s\n", "Class:", this.mobClass);
         System.out.printf("%-10s %10s\n\n", "Tier:", this.tier);
@@ -210,7 +236,18 @@ public class EntitySoMZombie extends EntityZombie {
         System.out.printf("%-20s, %s\n", "Invulnerabilities:", mobInv);
         // System.out.printf("%-20s %5.2d","MAX_HEALTH:",this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH));
         // System.out.printf("%-20s %5.2d","MAX_HEALTH:",this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH));
+    }
 
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("textureNumber", getTextureNumber());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        setTextureNum(compound.getInteger("textureNumber"));
 
     }
 }
