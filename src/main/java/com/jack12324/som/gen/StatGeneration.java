@@ -165,9 +165,11 @@ public class StatGeneration {
         String firstName = "";
         if (mobInv.size() > 0) {
             if (rand.nextBoolean())
-                lastName = LASTNAMEPRE[rand.nextInt(LASTNAMEPRE.length)] + mobInv.get(rand.nextInt(mobInv.size())).name();
+                lastName = LASTNAMEPRE[rand.nextInt(LASTNAMEPRE.length)] + mobInv
+                                .get(rand.nextInt(mobInv.size())).key();
             else
-                lastName = mobInv.get(rand.nextInt(mobInv.size())).name() + LASTNAMESUF[rand.nextInt(LASTNAMESUF.length)];
+                lastName = mobInv.get(rand.nextInt(mobInv.size())).key() + LASTNAMESUF[rand
+                                .nextInt(LASTNAMESUF.length)];
         } else
             lastName = LASTNAMEPRE[rand.nextInt(LASTNAMEPRE.length)] + LASTNAMESUF[rand.nextInt(LASTNAMESUF.length)];
 

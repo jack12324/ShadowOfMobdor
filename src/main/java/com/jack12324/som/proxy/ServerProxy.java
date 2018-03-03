@@ -14,10 +14,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber
 public class ServerProxy implements CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
+        ModEntities.init();
     }
 
     public void init(FMLInitializationEvent event) {
-        ModEntities.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {

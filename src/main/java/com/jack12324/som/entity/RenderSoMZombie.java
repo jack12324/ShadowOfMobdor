@@ -2,6 +2,7 @@ package com.jack12324.som.entity;
 
 import com.jack12324.som.ShadowOfMobdor;
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -11,7 +12,8 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import javax.annotation.Nonnull;
 
 public class RenderSoMZombie extends RenderLiving<EntitySoMZombie> {
-    private static final ResourceLocation[] mobTexture = new ResourceLocation[4];
+    private static final ResourceLocation[] mobTexture = new ResourceLocation[6];
+    double scale = 1.25;
 
     static {
         for (int i = 0; i < 4; i++)
@@ -22,6 +24,11 @@ public class RenderSoMZombie extends RenderLiving<EntitySoMZombie> {
 
     public RenderSoMZombie(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelZombie(), 0.5F);
+    }
+
+    @Override
+    protected void preRenderCallback(EntitySoMZombie entitylivingbaseIn, float partialTickTime) {
+        GlStateManager.scale(this.scale, this.scale, this.scale);
     }
 
     @Override

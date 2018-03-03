@@ -7,14 +7,16 @@ import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import tests.testStatGen;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class MobTracker {
     private static ArrayList<EntitySoMZombie[]> mobs = new ArrayList<>();
-    private static ArrayList<String> players = new ArrayList<>();
+    private static ArrayList<UUID> players = new ArrayList<>();
     private static ArrayList<Integer> playerLevels = new ArrayList<>();
 
     @SubscribeEvent
@@ -22,11 +24,14 @@ public class MobTracker {
         if (!players.contains(event.player) && !event.player.getEntityWorld().isRemote) ;
         {
             playerLevels.add(0);
-            players.add(event.player.getDisplayNameString());
+            players.add(event.player.getUniqueID());
             mobs.add(new EntitySoMZombie[10]);
-            for (EntitySoMZombie mob : mobs.get(mobs.size() - 1))
-                mob = new EntitySoMZombie(event.player.getEntityWorld(), playerLevels.get(playerLevels.size() - 1));
+            for (int i = 0; i < mobs.get(mobs.size() - 1).length; i++) {
+                mobs.get(mobs.size() - 1)[i] = new EntitySoMZombie(event.player.getEntityWorld(),
+                                playerLevels.get(playerLevels.size() - 1));
+            }
         }
+        testStatGen.testMobArray(mobs);
     }
 
     @SubscribeEvent

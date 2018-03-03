@@ -4,6 +4,7 @@ import com.jack12324.som.ShadowOfMobdor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.model.ModelLoader;
@@ -18,6 +19,7 @@ public abstract class BlockBase extends Block {
         super(material);
         setUnlocalizedName(ShadowOfMobdor.MODID + "." + name);
         setRegistryName(name);
+        setCreativeTab(CreativeTabs.MISC);
     }
 
     public Item createItemBlock() {

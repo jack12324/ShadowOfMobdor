@@ -12,18 +12,21 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy implements CommonProxy {
+    ServerProxy serverProxy = new ServerProxy();
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event) {
+        serverProxy.preInit(event);
         ModEntities.initModels();
     }
 
     @Override
-    public void postInit(FMLPostInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
+        serverProxy.init(event);
+    }
 
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        serverProxy.postInit(event);
     }
 
     @SubscribeEvent

@@ -48,6 +48,9 @@ public class BlockTestSpawner extends BlockTE<TileEntityTestSpawner> {
                 TextComponentTranslation component = new TextComponentTranslation("message.som.spawning", tile.getLevel());
                 player.sendStatusMessage(component, false);
                 EntitySoMZombie mob = new EntitySoMZombie(world, tile.getLevel());
+                mob.setPosition(tile.getPos().getX(), tile.getPos().getY() + 2,
+                                tile.getPos().getZ());
+                mob.onInitialSpawn(world.getDifficultyForLocation(tile.getPos()), null);
                 mob.print();
                 world.spawnEntity(mob);
             }

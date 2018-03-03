@@ -49,7 +49,48 @@ public class EntitySoMZombie extends EntityZombie {
         mobWk = StatGeneration.rollWeaknesses(this.tier.weaknessRolls(), this.mobWk);
         mobInv = StatGeneration.rollInvulnerabilities(this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
         this.name = StatGeneration.generateName(mobInv);
+        this.setSize(this.width * 1.25f, this.height * 1.25f);
+        setTexture(this.tier);
+    }
 
+    /**
+     * sets the texture varient based on the tier
+     *
+     * @param tier tier of mob
+     */
+    private void setTexture(Tier tier) {
+        switch (tier) {
+            case BASIC:
+                setTextureNum(0);
+                break;
+
+            case COMMON:
+                setTextureNum(1);
+                break;
+
+            case RARE:
+                setTextureNum(2);
+                break;
+
+            case EPIC:
+                setTextureNum(3);
+                break;
+
+            case LEGENDARY:
+                setTextureNum(4);
+                break;
+
+            case DEITY:
+                setTextureNum(5);
+                break;
+
+            default:
+                setTextureNum(0);
+        }
+    }
+
+    public EntitySoMZombie(World worldIn) {
+        this(worldIn, 0);
     }
 
     public int getTextureNumber() {
@@ -62,7 +103,7 @@ public class EntitySoMZombie extends EntityZombie {
 
     @Override
     protected void entityInit() {
-        int num = 0; //todo use to change texture
+        int num = 0; //todo use 2 change texture
         super.entityInit();
         this.dataManager.register(TEXTURE_NUM, num);
     }
@@ -105,8 +146,9 @@ public class EntitySoMZombie extends EntityZombie {
         return false;
     }
 
-    @Override
-    protected void applyEntityAttributes() {
+    @Override protected void applyEntityAttributes() {
+        //this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0);
+        //this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(0);
         super.applyEntityAttributes();
     }
 
@@ -141,6 +183,7 @@ public class EntitySoMZombie extends EntityZombie {
         this.setEnchantmentBasedOnDifficulty(difficulty);//todo make methods for level also
 
         applyModifiers();
+        this.setHealth(this.getMaxHealth());
 
 
         return livingdata;
@@ -158,10 +201,12 @@ public class EntitySoMZombie extends EntityZombie {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Health level add", 10 * level, 0));
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Follow range level add", 1 * level, 0));
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).applyModifier(new AttributeModifier("Knockback resistance level add", .5 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Movement Speed level add", .01 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).applyModifier(new AttributeModifier("flying speed level add", .01 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Attack damage level add", .5 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).applyModifier(new AttributeModifier("Attack Speed level add", .2 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Movement Speed level add", .01 * level,
+                        0));
+        //this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).applyModifier(new AttributeModifier("flying speed level add", .01 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Attack damage level add", .5 * level,
+                        0));
+        //this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).applyModifier(new AttributeModifier("Attack Speed level add", .2 * level, 0));
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier("Armor level add", .1 * level, 0));
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).applyModifier(new AttributeModifier("Armor toughness level add", .1 * level, 0));
 
@@ -169,10 +214,12 @@ public class EntitySoMZombie extends EntityZombie {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Health mult", this.mobClass.healthMult() * this.tier.tierMultiplier(), 1));
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Follow range mult", this.mobClass.followRangeMult() * this.tier.tierMultiplier(), 1));
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).applyModifier(new AttributeModifier("Knockback resistance mult", this.mobClass.knockbackResistanceMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Movement Speed mult", this.mobClass.mvtSpeedMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).applyModifier(new AttributeModifier("flying speed mult", this.mobClass.flySpeedMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Attack damage mult", this.mobClass.attackMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).applyModifier(new AttributeModifier("Attack Speed mult", this.mobClass.atkSpeedMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Movement Speed mult", this.mobClass.mvtSpeedMult() * this.tier.tierMultiplier(),
+                        1));
+        //this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).applyModifier(new AttributeModifier("flying speed mult", this.mobClass.flySpeedMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Attack damage mult", this.mobClass.attackMult() * this.tier.tierMultiplier(),
+                        1));
+        // this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).applyModifier(new AttributeModifier("Attack Speed mult", this.mobClass.atkSpeedMult() * this.tier.tierMultiplier(), 1));
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier("Armor mult", this.mobClass.armorMult() * this.tier.tierMultiplier(), 1));
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).applyModifier(new AttributeModifier("Armor toughness mult", this.mobClass.armorToughnessMult() * this.tier.tierMultiplier(), 1));
 
@@ -186,9 +233,9 @@ public class EntitySoMZombie extends EntityZombie {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeAllModifiers();
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).removeAllModifiers();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).removeAllModifiers();
+        //this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).removeAllModifiers();
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).removeAllModifiers();
+        // this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).removeAllModifiers();
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).removeAllModifiers();
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).removeAllModifiers();
 
@@ -208,6 +255,7 @@ public class EntitySoMZombie extends EntityZombie {
             mobInv = StatGeneration.rollInvulnerabilities(temp.invulnerableRolls() - this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
             this.tier = temp;
             applyModifiers();
+            setTexture(this.tier);
         }
     }
 
@@ -219,23 +267,34 @@ public class EntitySoMZombie extends EntityZombie {
 
 
     public void print() {
-        System.out.printf("%-10s %s\n", "Name:", this.name);
-        System.out.printf("%-10s %3d\n", "Level:", this.level);
-        System.out.printf("%-10s %10s\n", "Class:", this.mobClass);
-        System.out.printf("%-10s %10s\n\n", "Tier:", this.tier);
-        System.out.printf("%-20s %5.2f\n", "Max Health:", this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "Follow Range:", this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "KNOCKBACK_RESISTANCE:", this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "MOVEMENT_SPEED:", this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "FLYING_SPEED:", this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "ATTACK_DAMAGE:", this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "ATTACK_SPEED:", this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "ARMOR:", this.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue());
-        System.out.printf("%-20s %5.2f\n", "ARMOR_TOUGHNESS:", this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
-        System.out.printf("\n%-20s %s\n", "Weaknesses:", mobWk);
-        System.out.printf("%-20s, %s\n", "Invulnerabilities:", mobInv);
-        // System.out.printf("%-20s %5.2d","MAX_HEALTH:",this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH));
-        // System.out.printf("%-20s %5.2d","MAX_HEALTH:",this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH));
+        System.out.printf("%-25s %5s\n", "Name:", this.name);
+        System.out.printf("%-25s %-5d\n", "Level:", this.level);
+        System.out.printf("%-25s %5s\n", "Class:", this.mobClass);
+        System.out.printf("%-25s %5s\n\n", "Tier:", this.tier);
+        System.out.printf("%-25s %5.2f\n", "Max Health:",
+                        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH)
+                                        .getAttributeValue());
+        System.out.printf("%-25s %5.2f\n", "Follow Range:",
+                        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE)
+                                        .getAttributeValue());
+        System.out.printf("%-25s %5.2f\n", "KNOCKBACK_RESISTANCE:",
+                        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE)
+                                        .getAttributeValue());
+        System.out.printf("%-25s %5.2f\n", "MOVEMENT_SPEED:",
+                        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)
+                                        .getAttributeValue());
+        //System.out.printf("%-25s %5.2f\n", "FLYING_SPEED:", this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).getAttributeValue());
+        System.out.printf("%-25s %5.2f\n", "ATTACK_DAMAGE:",
+                        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)
+                                        .getAttributeValue());
+        //System.out.printf("%-25s %5.2f\n", "ATTACK_SPEED:", this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue());
+        System.out.printf("%-25s %5.2f\n", "ARMOR:",
+                        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue());
+        System.out.printf("%-25s %5.2f\n", "ARMOR_TOUGHNESS:",
+                        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS)
+                                        .getAttributeValue());
+        System.out.printf("\n%-25s %s\n", "Weaknesses:", mobWk);
+        System.out.printf("%-25s, %s\n", "Invulnerabilities:", mobInv);
     }
 
     @Override

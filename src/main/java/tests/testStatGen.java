@@ -1,18 +1,21 @@
 package tests;
 
+import com.jack12324.som.ShadowOfMobdor;
+import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.gen.SoMClass;
 import com.jack12324.som.gen.StatGeneration;
 import com.jack12324.som.gen.Tier;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 
+@Mod.EventBusSubscriber
 public class testStatGen {
     public static void main(String[] args) {
 
         //testRolls();
         // testClassRoll();
         // testTierRolls();
-
 
     }
 
@@ -158,5 +161,13 @@ public class testStatGen {
             counter--;
         }
 
+    }
+
+    public static void testMobArray(ArrayList<EntitySoMZombie[]> mobs) {
+        for (int i = 0; i < mobs.get(mobs.size() - 1).length; i++) {
+            ShadowOfMobdor.logger
+                            .info((mobs.get(mobs.size() - 1)[mobs.get(mobs.size() - 1).length - 1])
+                                            .equals(mobs.get(mobs.size() - 1)[i]));
+        }
     }
 }
