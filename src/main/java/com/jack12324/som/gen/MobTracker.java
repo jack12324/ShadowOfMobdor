@@ -15,8 +15,8 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class MobTracker {
-    private static ArrayList<EntitySoMZombie[]> mobs = new ArrayList<>();
-    private static ArrayList<UUID> players = new ArrayList<>();
+    public static ArrayList<EntitySoMZombie[]> mobs = new ArrayList<>();
+    public static ArrayList<UUID> players = new ArrayList<>();
     private static ArrayList<Integer> playerLevels = new ArrayList<>();
 
     @SubscribeEvent
@@ -38,18 +38,19 @@ public class MobTracker {
     public static void playerDied(LivingDeathEvent event) {
         if (!(event.getEntity().getEntityWorld().isRemote)) {
             if (event.getEntity() instanceof EntityPlayer) {
-                if (event.getSource().getTrueSource() instanceof EntitySoMZombie)
-                    mobKilledPlayer((EntitySoMZombie) event.getSource().getTrueSource());
+
 
                 EntityPlayer player = (EntityPlayer) event.getEntity();
 
-                int index = players.indexOf(player.getDisplayNameString());
+                int index = players.indexOf(player.getUniqueID());
                 for (int i = 0; i < mobs.get(index).length; i++) {
                     if (mobs.get(index)[i] == null)
                         mobs.get(index)[i] = new EntitySoMZombie(player.getEntityWorld(), playerLevels.get(index));
                     else
-                        mobs.get(index)[i].reRoll(); //todo change this into event instead of automatic re roll
+                        mobs.get(index)[i].reRoll(playerLevels.get(index)); //todo change this into event instead of automatic re roll
                 }
+                if (event.getSource().getTrueSource() instanceof EntitySoMZombie)
+                    mobKilledPlayer((EntitySoMZombie) event.getSource().getTrueSource(), playerLevels.get(index));
             }
         }
     }
@@ -62,9 +63,9 @@ public class MobTracker {
         }
     }
 
-    public static void mobKilledPlayer(EntitySoMZombie mob) {
+    public static void mobKilledPlayer(EntitySoMZombie mob, int index) {
         mob.setDead();//todo make sure this doesn't drop anything
-        mob.reRoll();
+        mob.reRoll(index);//todo something special?
     }
 
     public static void removeMob(EntitySoMZombie mob) {
@@ -76,5 +77,4 @@ public class MobTracker {
             }
         }
     }
-
 }

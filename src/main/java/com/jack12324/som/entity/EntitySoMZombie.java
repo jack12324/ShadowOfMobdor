@@ -30,6 +30,7 @@ public class EntitySoMZombie extends EntityZombie {
     private ArrayList<Weaknesses> mobWk = new ArrayList<>();
     private ArrayList<Invulnerabilities> mobInv = new ArrayList<>();
     private String name;
+
     public static final ResourceLocation LOOT = new ResourceLocation(ShadowOfMobdor.MODID, "entities/zombie");
     public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);
 
@@ -244,9 +245,9 @@ public class EntitySoMZombie extends EntityZombie {
         //this.getEntityAttribute(SharedMonsterAttributes.SECOND_LIFE).applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextDouble() * 0.05000000074505806D, 0));
     }
 
-    public void reRoll() {
+    public void reRoll(int level) {
 
-        tryLevelUp();
+        tryLevelUp(level);
 
         Tier temp = StatGeneration.rollTier(this.level);
         if (temp.isGreaterTier(this.tier)) {
@@ -259,7 +260,7 @@ public class EntitySoMZombie extends EntityZombie {
         }
     }
 
-    public void tryLevelUp() {
+    public void tryLevelUp(int level) {
         int templvl = StatGeneration.rollLevel(level);
         if (templvl > this.level) ;
         this.level = templvl;
