@@ -7,7 +7,6 @@ import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import tests.testStatGen;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,7 +30,7 @@ public class MobTracker {
                                 playerLevels.get(playerLevels.size() - 1));
             }
         }
-        testStatGen.testMobArray(mobs);
+        //testStatGen.testMobArray(mobs);
     }
 
     @SubscribeEvent
