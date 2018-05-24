@@ -21,6 +21,7 @@ public class GuiGUI extends GuiScreen {
     EntitySoMZombie[] mobs;
 
     public GuiGUI(EntityPlayer player) {
+        super();
         this.player = player;
         int index = MobTracker.players.indexOf(player.getUniqueID());
         mobs = MobTracker.mobs.get(index);
@@ -42,26 +43,18 @@ public class GuiGUI extends GuiScreen {
     @Override
     public void initGui() {
         int index = MobTracker.players.indexOf(player.getUniqueID());
-        super.initGui();
         EntitySoMZombie[] mobs = MobTracker.mobs.get(index);
         for (int i = 0; i < mobs.length; i++)
             buttonList.add(new GuiButton(i, 10 * i, 10 * 1, 10, 10, mobs[i].getName()));
     }
 
+
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        switch (button.id) {
-            case 0:
-                System.out.print("a");
-                break;
-            case 1:
-                player.openGui(ShadowOfMobdor.instance, SoMGuiHandler.DESC, player.world, mobs[1].getEntityId(), 0, 0);//todo should i add a actual position
-                break;
-            default:
-                super.actionPerformed(button);
-                break;
-
-        }
+        if (button.id < mobs.length && button.id >= 0)
+            player.openGui(ShadowOfMobdor.instance, SoMGuiHandler.DESC, player.world, mobs[button.id].getEntityId(), 0, 0);
+        else
+            super.actionPerformed(button);
 
     }
 }

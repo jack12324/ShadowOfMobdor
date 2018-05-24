@@ -1,13 +1,11 @@
 package com.jack12324.som;
 
-import com.jack12324.som.gui.SoMGuiHandler;
 import com.jack12324.som.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ShadowOfMobdor.MODID, name = ShadowOfMobdor.MODNAME, version = ShadowOfMobdor.MODVERSION, useMetadata = true)
@@ -29,7 +27,6 @@ public class ShadowOfMobdor {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         proxy.preInit(event);
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new SoMGuiHandler());
     }
 
     @Mod.EventHandler

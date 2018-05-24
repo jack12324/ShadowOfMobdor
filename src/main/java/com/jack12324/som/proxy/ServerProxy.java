@@ -2,6 +2,7 @@ package com.jack12324.som.proxy;
 
 import com.jack12324.som.blocks.SoMBlocks;
 import com.jack12324.som.entity.ModEntities;
+import com.jack12324.som.gui.SoMGuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod.EventBusSubscriber
 public class ServerProxy implements CommonProxy {
@@ -18,6 +20,7 @@ public class ServerProxy implements CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new SoMGuiHandler());
     }
 
     public void postInit(FMLPostInitializationEvent event) {
