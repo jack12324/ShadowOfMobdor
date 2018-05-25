@@ -50,6 +50,7 @@ public class EntitySoMZombie extends EntityZombie {
         mobWk = StatGeneration.rollWeaknesses(this.tier.weaknessRolls(), this.mobWk);
         mobInv = StatGeneration.rollInvulnerabilities(this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
         this.name = StatGeneration.generateName(mobInv);
+        setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
         setTexture(this.tier);
     }
