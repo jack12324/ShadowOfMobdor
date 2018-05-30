@@ -20,7 +20,7 @@ public class MobTracker {
 
     @SubscribeEvent
     public static void newPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!players.contains(event.player) && !event.player.getEntityWorld().isRemote) ;
+        if (!players.contains(event.player.getUniqueID()) && !event.player.getEntityWorld().isRemote) ;
         {
             playerLevels.add(0);
             players.add(event.player.getUniqueID());

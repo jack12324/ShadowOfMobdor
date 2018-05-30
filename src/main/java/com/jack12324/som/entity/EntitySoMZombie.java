@@ -201,7 +201,7 @@ public class EntitySoMZombie extends EntityZombie {
     private void applyModifiers() {
         removeModifiers();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Health level add", 10 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Follow range level add", 1 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Follow range level add", level, 0));
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).applyModifier(new AttributeModifier("Knockback resistance level add", .5 * level, 0));
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Movement Speed level add", .01 * level,
                         0));

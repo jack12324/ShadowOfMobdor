@@ -1,7 +1,12 @@
 package com.jack12324.som.proxy;
 
 import com.jack12324.som.blocks.SoMBlocks;
+import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.entity.ModEntities;
+import com.jack12324.som.gui.GuiDESC;
+import com.jack12324.som.gui.GuiGUI;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -32,5 +37,16 @@ public class ClientProxy implements CommonProxy {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         SoMBlocks.initModels();
+    }
+
+    public void openGUI(int id, EntityPlayer player, EntitySoMZombie mob) {
+        switch (id) {//todo constant value for IDS for easier reading
+            case 0:
+                Minecraft.getMinecraft().displayGuiScreen(new GuiGUI(player));
+                break;
+            case 1:
+                Minecraft.getMinecraft().displayGuiScreen(new GuiDESC(mob));
+                break;
+        }
     }
 }

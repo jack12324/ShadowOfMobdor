@@ -45,14 +45,14 @@ public class GuiGUI extends GuiScreen {
         int index = MobTracker.players.indexOf(player.getUniqueID());
         EntitySoMZombie[] mobs = MobTracker.mobs.get(index);
         for (int i = 0; i < mobs.length; i++)
-            buttonList.add(new GuiButton(i, 10 * i, 10 * 1, 10, 10, mobs[i].getName()));
+            buttonList.add(new GuiButton(i, 10 * i, 10, 10, 10, mobs[i].getName()));
     }
 
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id < mobs.length && button.id >= 0)
-            player.openGui(ShadowOfMobdor.instance, SoMGuiHandler.DESC, player.world, mobs[button.id].getEntityId(), 0, 0);
+            ShadowOfMobdor.proxy.openGUI(1, player, mobs[button.id]);
         else
             super.actionPerformed(button);
 
