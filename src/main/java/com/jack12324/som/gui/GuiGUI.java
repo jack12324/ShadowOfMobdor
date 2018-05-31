@@ -17,13 +17,16 @@ public class GuiGUI extends GuiScreen {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID, "textures/gui/gui.png");
     int xSize = 176;
     int ySize = 166;
+    int x = (width - xSize) / 2;
+    int y = (height - ySize) / 2;
     EntityPlayer player;
     EntitySoMZombie[] mobs;
+    int index;
 
     public GuiGUI(EntityPlayer player) {
         super();
         this.player = player;
-        int index = MobTracker.players.indexOf(player.getUniqueID());
+        index = MobTracker.players.indexOf(player.getUniqueID());
         mobs = MobTracker.mobs.get(index);
     }
 
@@ -32,8 +35,6 @@ public class GuiGUI extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
         GlStateManager.color(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(BG_TEXTURE);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
         String name = I18n.format(SoMBlocks.gui.getUnlocalizedName() + ".name");
@@ -42,10 +43,15 @@ public class GuiGUI extends GuiScreen {
 
     @Override
     public void initGui() {
-        int index = MobTracker.players.indexOf(player.getUniqueID());
-        EntitySoMZombie[] mobs = MobTracker.mobs.get(index);
-        for (int i = 0; i < mobs.length; i++)
-            buttonList.add(new GuiButton(i, 10 * i, 10, 10, 10, mobs[i].getName()));
+        int butX;
+        int butWidth;
+
+        //adds button for each mob
+        for (int i = 0; i < mobs.length; i++) {
+            butWidth = fontRenderer.getStringWidth(mobs[i].getName());         //calculate needed width to fit name
+            butX = (xSize - butWidth) / 2;                                        //center button
+            buttonList.add(new GuiButton(i, butX, y + 10 + (11 * i), butWidth, 10, mobs[i].getName()));
+        }
     }
 
 

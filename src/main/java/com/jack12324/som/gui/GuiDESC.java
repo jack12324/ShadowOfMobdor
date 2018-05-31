@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
+import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen;
+
 public class GuiDESC extends GuiScreen {
     EntitySoMZombie mob;
     int xSize = 176;
@@ -28,9 +30,9 @@ public class GuiDESC extends GuiScreen {
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
         String name = mob.getName();
-        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
+        fontRenderer.drawString(name, (xSize - fontRenderer.getStringWidth(name)) / 2, y + 5, 0x404040);
 
-        //todo drawEntityOnScreen();
+        drawEntityOnScreen(x, y, 1, mouseX, mouseY, mob);
 
     }
 }

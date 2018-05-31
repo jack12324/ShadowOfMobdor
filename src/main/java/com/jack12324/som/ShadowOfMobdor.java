@@ -27,15 +27,19 @@ public class ShadowOfMobdor {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         proxy.preInit(event);
+        logger.info("XXXpreinitXXX");
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
         proxy.init(e);
+
+        logger.info("XXXinitXXX");
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         proxy.postInit(e);
+        logger.info("XXXpostinitXXX");
     }
 }
