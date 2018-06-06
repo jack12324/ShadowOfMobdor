@@ -17,8 +17,6 @@ public class GuiGUI extends GuiScreen {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID, "textures/gui/gui.png");
     int xSize = 176;
     int ySize = 166;
-    int x = (width - xSize) / 2;
-    int y = (height - ySize) / 2;
     EntityPlayer player;
     EntitySoMZombie[] mobs;
     int index;
@@ -32,6 +30,8 @@ public class GuiGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        int x = (width - xSize) / 2;
+        int y = (height - ySize) / 2;
         super.drawScreen(mouseX, mouseY, partialTicks);
         GlStateManager.color(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(BG_TEXTURE);
@@ -45,6 +45,7 @@ public class GuiGUI extends GuiScreen {
     public void initGui() {
         int butX;
         int butWidth;
+        int y = (height - ySize) / 2;
 
         //adds button for each mob
         for (int i = 0; i < mobs.length; i++) {
