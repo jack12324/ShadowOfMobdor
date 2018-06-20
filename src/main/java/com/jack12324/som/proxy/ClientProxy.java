@@ -45,7 +45,7 @@ public class ClientProxy implements CommonProxy {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiGUI(player));
                 break;
             case 1:
-                Minecraft.getMinecraft().displayGuiScreen(new GuiDESC(mob));
+                Minecraft.getMinecraft().displayGuiScreen(new GuiDESC(mob, player));
                 break;
         }
     }
