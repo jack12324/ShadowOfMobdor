@@ -38,21 +38,36 @@ public class GuiGUI extends GuiScreen {
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
         String name = I18n.format(SoMBlocks.gui.getUnlocalizedName() + ".name");
-        fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
+        fontRenderer.drawString(name, x + (xSize / 2 - fontRenderer.getStringWidth(name) / 2),
+                        y + 6, 0x404040);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
     public void initGui() {
         int butX;
         int butWidth;
+        int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
 
         //adds button for each mob
         for (int i = 0; i < mobs.length; i++) {
-            butWidth = fontRenderer.getStringWidth(mobs[i].getName());         //calculate needed width to fit name
-            butX = (xSize - butWidth) / 2;                                        //center button
-            buttonList.add(new GuiButton(i, butX, y + 10 + (11 * i), butWidth, 10, mobs[i].getName()));
+            butWidth = calcButtonWidth() + 4;         //calculate
+            // needed width to fit name
+            butX = ((xSize - butWidth) / 2) + x;                                        //center
+            // button
+            buttonList.add(new GuiButton(i, butX, y + 10 + (14 * i), butWidth, 12,
+                            mobs[i].getName()));
         }
+    }
+
+    private int calcButtonWidth() {
+        int max = 0;
+        for (EntitySoMZombie mob : mobs) {
+            if (fontRenderer.getStringWidth(mob.getName()) > max)
+                max = fontRenderer.getStringWidth(mob.getName());
+        }
+        return max;
     }
 
 
