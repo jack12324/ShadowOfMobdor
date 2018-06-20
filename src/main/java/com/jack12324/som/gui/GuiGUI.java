@@ -56,7 +56,7 @@ public class GuiGUI extends GuiScreen {
             // needed width to fit name
             butX = ((xSize - butWidth) / 2) + x;                                        //center
             // button
-            buttonList.add(new GuiButton(i, butX, y + 10 + (14 * i), butWidth, 12,
+            buttonList.add(new GuiButton(i, butX, y + 10 + (21 * i), butWidth, 20,
                             mobs[i].getName()));
         }
     }

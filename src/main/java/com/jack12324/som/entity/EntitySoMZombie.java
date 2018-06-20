@@ -42,6 +42,18 @@ public class EntitySoMZombie extends EntityZombie {
         return mobInv;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public Tier getTier() {
+        return tier;
+    }
+
+    public SoMClass getMobClass() {
+        return mobClass;
+    }
+
     public EntitySoMZombie(World worldIn, int playerLvl) {
         super(worldIn);
         this.level = StatGeneration.rollLevel(playerLvl);
