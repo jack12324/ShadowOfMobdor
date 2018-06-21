@@ -2,6 +2,8 @@ package com.jack12324.som.gui;
 
 import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.entity.EntitySoMZombie;
+import com.jack12324.som.gen.Invulnerabilities;
+import com.jack12324.som.gen.Weaknesses;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,16 +13,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen;
 
 public class GuiDESC extends GuiScreen {
-    EntitySoMZombie mob;
-    EntityPlayer player;
-    int xSize = 176;
-    int ySize = 166;
-    float oldMouseX;
-    float oldMouseY;
+    EntitySoMZombie mob;        //mob from which to display information
+    EntityPlayer player;        //player gui opened on, used to return to gui
+    int xSize = 176;            // width of gui
+    int ySize = 256;            // height of gui
+    float oldMouseX;            //last x position of mouse TODO do i need this
+    float oldMouseY;            //lasy y position of mouse TODO do i need this
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID, "textures/gui/desc.png");
 
     public GuiDESC(Entity mob, EntityPlayer player) {
@@ -47,6 +51,7 @@ public class GuiDESC extends GuiScreen {
         int col2 = x + 90;       //attribute column 2
         int row = y + 15;         //row location of stat
         int rowSpacing = 15;    //distance to place between y start of rows
+        List<String> hovering = new ArrayList<>();
 
         fontRenderer.drawString("Level: " + mob.getLevel(), col1, row, 0x404040);
         fontRenderer.drawString("Class: " + mob.getMobClass(), col2, row, 0x404040);
@@ -57,21 +62,55 @@ public class GuiDESC extends GuiScreen {
 
         row += rowSpacing;
 
+        //render all stats and hovering text if needed
         fontRenderer.drawString("Health: " + mob.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue(), col1, row, 0x404040);
+
+        if (inBox(mouseX, mouseY, col1, row, fontRenderer.getStringWidth("Health: " + mob.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue()), fontRenderer.FONT_HEIGHT)) {
+            hovering.add("Default: 20");
+            hovering.add("Min: 0");
+            hovering.add("Max: 1024");
+            drawHoveringText(hovering, mouseX, mouseY);
+            hovering.clear();
+        }
 
         row += rowSpacing;
 
         fontRenderer.drawString("Damage: " + mob.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue(), col1, row, 0x404040);
-        fontRenderer.drawString("Movement Speed: " + mob.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue(), col2, row, 0x404040);
+        fontRenderer.drawString("Movement Speed: " + ((int) (mob.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 1000)) / 1000.0, col2, row, 0x404040);
+
+        if (inBox(mouseX, mouseY, col1, row, fontRenderer.getStringWidth("Movement Speed: " + ((int) (mob.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 1000)) / 1000.0), fontRenderer.FONT_HEIGHT)) {
+            hovering.add("Defaults:");
+            hovering.add("Player: .1");
+            hovering.add("Zombie: .23");
+            hovering.add("Bat: .7");
+            drawHoveringText(hovering, mouseX, mouseY);
+            hovering.clear();
+        }
+
+        if (inBox(mouseX, mouseY, col2, row, fontRenderer.getStringWidth("Damage: " + mob.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()), fontRenderer.FONT_HEIGHT)) {
+            hovering.add("Damage dealt by attacks, in half-hearts.");
+            hovering.add("Default: 2");
+            drawHoveringText(hovering, mouseX, mouseY);
+            hovering.clear();
+        }
 
         row += rowSpacing;
 
         fontRenderer.drawString("Armor: " + mob.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue(), col1, row, 0x404040);
         fontRenderer.drawString("Armor Toughness: " + mob.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue(), col2, row, 0x404040);
 
+        //list Invulnerabilities and Weaknesses
         fontRenderer.drawString("Invulnerabilities:", x + 15, y + 100, 0x404040);
-        fontRenderer.drawString("Weaknesses:", x + 15, y + 125, 0x404040);
+        StringBuilder text = new StringBuilder();
+        for (Invulnerabilities inv : mob.getMobInv())
+            text.append(inv.key() + " ");
+        fontRenderer.drawSplitString(text.toString(), x + 15, y + 115, width - 30, 0x404040);
 
+        fontRenderer.drawString("Weaknesses:", x + 15, y + 130, 0x404040);
+        text = new StringBuilder();
+        for (Weaknesses wk : mob.getMobWk())
+            text.append(wk.key() + " ");
+        fontRenderer.drawSplitString(text.toString(), x + 15, y + 145, width - 30, 0x404040);
 
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -79,6 +118,24 @@ public class GuiDESC extends GuiScreen {
         this.oldMouseX = (float) mouseX;
         this.oldMouseY = (float) mouseY;
     }
+
+    /**
+     * Tells if position is within a box
+     *
+     * @param x      x position to test
+     * @param y      y position to test
+     * @param xStart x start position of box
+     * @param yStart y start position of box
+     * @param width  width of box
+     * @param height height of box
+     * @return true if x, y is within box parameters
+     */
+    private boolean inBox(int x, int y, int xStart, int yStart, int width, int height) {
+        return x >= xStart && x <= xStart + width
+                && y >= yStart && y <= yStart + height;
+    }
+
+
 
     @Override
     public void initGui() {
