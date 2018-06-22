@@ -23,7 +23,7 @@ public class MobTracker {
         if (!players.contains(event.player.getUniqueID()) && !event.player
                         .getEntityWorld().isRemote)
         {
-            playerLevels.add(1);
+            playerLevels.add(60);
             players.add(event.player.getUniqueID());
             mobs.add(new EntitySoMZombie[10]);
             for (int i = 0; i < mobs.get(mobs.size() - 1).length; i++) {
