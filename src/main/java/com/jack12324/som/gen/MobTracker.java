@@ -20,14 +20,16 @@ public class MobTracker {
 
     @SubscribeEvent
     public static void newPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!players.contains(event.player.getUniqueID()) && !event.player.getEntityWorld().isRemote) ;
+        if (!players.contains(event.player.getUniqueID()) && !event.player
+                        .getEntityWorld().isRemote)
         {
-            playerLevels.add(0);
+            playerLevels.add(1);
             players.add(event.player.getUniqueID());
             mobs.add(new EntitySoMZombie[10]);
             for (int i = 0; i < mobs.get(mobs.size() - 1).length; i++) {
                 mobs.get(mobs.size() - 1)[i] = new EntitySoMZombie(event.player.getEntityWorld(),
                                 playerLevels.get(playerLevels.size() - 1));
+                //mobs.get(mobs.size()-1)[i].print();
             }
         }
         //testStatGen.testMobArray(mobs);

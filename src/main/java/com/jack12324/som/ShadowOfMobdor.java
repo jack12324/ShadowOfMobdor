@@ -1,11 +1,17 @@
 package com.jack12324.som;
 
+import com.jack12324.som.blocks.SoMBlocks;
 import com.jack12324.som.proxy.CommonProxy;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ShadowOfMobdor.MODID, name = ShadowOfMobdor.MODNAME, version = ShadowOfMobdor.MODVERSION, useMetadata = true)
@@ -41,5 +47,23 @@ public class ShadowOfMobdor {
     public void postInit(FMLPostInitializationEvent e) {
         proxy.postInit(e);
         logger.info("XXXpostinitXXX");
+    }
+
+    @Mod.EventBusSubscriber public static class RegistrationHandler {
+
+        @SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
+            SoMBlocks.register(event.getRegistry());
+        }
+
+        @SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
+            SoMBlocks.registerItemBlocks(event.getRegistry());
+        }
+
+        @SubscribeEvent public static void registerModels(ModelRegistryEvent event) {
+            SoMBlocks.registerModels();
+        }
+
+        // ...
+
     }
 }

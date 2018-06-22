@@ -2,6 +2,7 @@ package com.jack12324.som.proxy;
 
 import com.jack12324.som.entity.EntitySoMZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -16,4 +17,5 @@ public interface CommonProxy {
 
     void openGUI(int id, EntityPlayer player, EntitySoMZombie mob);
 
+    void registerItemRenderer(Item item, int meta, String id);
 }
