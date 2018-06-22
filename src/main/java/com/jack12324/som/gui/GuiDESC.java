@@ -47,8 +47,8 @@ public class GuiDESC extends GuiScreen {
         fontRenderer.drawString(name, x + ((xSize - fontRenderer.getStringWidth(name)) / 2), y + 5,
                         0x404040);
 
-        int col1 = x + 40;       //attribute column 1
-        int col2 = x + 90;       //attribute column 2
+        int col1 = x + 60;       //attribute column 1
+        int col2 = x + 140;       //attribute column 2
         int row = y + 15;         //row location of stat
         int rowSpacing = 15;    //distance to place between y start of rows
         List<String> hovering = new ArrayList<>();
@@ -65,20 +65,25 @@ public class GuiDESC extends GuiScreen {
         //render all stats and hovering text if needed
         fontRenderer.drawString("Health: " + mob.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue(), col1, row, 0x404040);
 
-        if (inBox(mouseX, mouseY, col1, row, fontRenderer.getStringWidth("Health: " + mob.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue()), fontRenderer.FONT_HEIGHT)) {
+        row += rowSpacing;
+
+        fontRenderer.drawString("Damage: " + mob.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue(), col1, row, 0x404040);
+        fontRenderer.drawString("Movement Speed: " + ((int) (mob.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 1000)) / 1000.0, col2, row, 0x404040);
+
+        row += rowSpacing;
+
+        fontRenderer.drawString("Armor: " + mob.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue(), col1, row, 0x404040);
+        fontRenderer.drawString("Armor Toughness: " + mob.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue(), col2, row, 0x404040);
+
+        //render hovering text (last so that it comes above other stuff
+        if (inBox(mouseX, mouseY, col1, row - 2 * rowSpacing, fontRenderer.getStringWidth("Health: " + mob.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue()), fontRenderer.FONT_HEIGHT)) {
             hovering.add("Default: 20");
             hovering.add("Min: 0");
             hovering.add("Max: 1024");
             drawHoveringText(hovering, mouseX, mouseY);
             hovering.clear();
         }
-
-        row += rowSpacing;
-
-        fontRenderer.drawString("Damage: " + mob.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue(), col1, row, 0x404040);
-        fontRenderer.drawString("Movement Speed: " + ((int) (mob.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 1000)) / 1000.0, col2, row, 0x404040);
-
-        if (inBox(mouseX, mouseY, col1, row, fontRenderer.getStringWidth("Movement Speed: " + ((int) (mob.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 1000)) / 1000.0), fontRenderer.FONT_HEIGHT)) {
+        if (inBox(mouseX, mouseY, col1, row - rowSpacing, fontRenderer.getStringWidth("Movement Speed: " + ((int) (mob.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 1000)) / 1000.0), fontRenderer.FONT_HEIGHT)) {
             hovering.add("Defaults:");
             hovering.add("Player: .1");
             hovering.add("Zombie: .23");
@@ -86,18 +91,12 @@ public class GuiDESC extends GuiScreen {
             drawHoveringText(hovering, mouseX, mouseY);
             hovering.clear();
         }
-
-        if (inBox(mouseX, mouseY, col2, row, fontRenderer.getStringWidth("Damage: " + mob.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()), fontRenderer.FONT_HEIGHT)) {
+        if (inBox(mouseX, mouseY, col2, row - rowSpacing, fontRenderer.getStringWidth("Damage: " + mob.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()), fontRenderer.FONT_HEIGHT)) {
             hovering.add("Damage dealt by attacks, in half-hearts.");
             hovering.add("Default: 2");
             drawHoveringText(hovering, mouseX, mouseY);
             hovering.clear();
         }
-
-        row += rowSpacing;
-
-        fontRenderer.drawString("Armor: " + mob.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue(), col1, row, 0x404040);
-        fontRenderer.drawString("Armor Toughness: " + mob.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue(), col2, row, 0x404040);
 
         //list Invulnerabilities and Weaknesses
         fontRenderer.drawString("Invulnerabilities:", x + 15, y + 100, 0x404040);
