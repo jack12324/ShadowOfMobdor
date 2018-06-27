@@ -16,7 +16,7 @@ import java.io.IOException;
 public class GuiGUI extends GuiScreen {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID, "textures/gui/gui.png");
     int xSize = 176;
-    int ySize = 256;
+    int ySize = 200;
     EntityPlayer player;
     EntitySoMZombie[] mobs;
     int index;

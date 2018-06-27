@@ -21,8 +21,8 @@ import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen
 public class GuiDESC extends GuiScreen {
     EntitySoMZombie mob;        //mob from which to display information
     EntityPlayer player;        //player gui opened on, used to return to gui
-    int xSize = 176;            // width of gui
-    int ySize = 256;            // height of gui
+    int xSize = 256;            // width of gui
+    int ySize = 166;            // height of gui
     float oldMouseX;            //last x position of mouse TODO do i need this
     float oldMouseY;            //lasy y position of mouse TODO do i need this
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID, "textures/gui/desc.png");

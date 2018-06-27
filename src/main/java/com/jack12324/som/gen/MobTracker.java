@@ -16,7 +16,7 @@ import java.util.UUID;
 public class MobTracker {
     public static ArrayList<EntitySoMZombie[]> mobs = new ArrayList<>();
     public static ArrayList<UUID> players = new ArrayList<>();
-    private static ArrayList<Integer> playerLevels = new ArrayList<>();
+    public static ArrayList<Integer> playerLevels = new ArrayList<>();
 
     @SubscribeEvent
     public static void newPlayer(PlayerEvent.PlayerLoggedInEvent event) {
@@ -24,6 +24,7 @@ public class MobTracker {
                         .getEntityWorld().isRemote)
         {
             playerLevels.add(1);
+            Leveling.playerXP.add(0);
             players.add(event.player.getUniqueID());
             mobs.add(new EntitySoMZombie[10]);
             for (int i = 0; i < mobs.get(mobs.size() - 1).length; i++) {
