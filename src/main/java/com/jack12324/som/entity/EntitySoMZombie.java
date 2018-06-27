@@ -17,6 +17,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -65,6 +66,8 @@ public class EntitySoMZombie extends EntityZombie {
         setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
         setTexture(this.tier);
+        //TODO not sure about doing this but need it to display stats correctly I think. might be able to just call apply attributes instead
+        onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(0, 0, 0)), null);
     }
 
     /**

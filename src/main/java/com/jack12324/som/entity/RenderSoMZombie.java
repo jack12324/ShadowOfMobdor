@@ -16,7 +16,7 @@ public class RenderSoMZombie extends RenderLiving<EntitySoMZombie> {
     double scale = 1.25;
 
     static {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i <= 5; i++)
             mobTexture[i] = new ResourceLocation(ShadowOfMobdor.MODID, "textures/entities/zombie" + i + ".png");
     }
 

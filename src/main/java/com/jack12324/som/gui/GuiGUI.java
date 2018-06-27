@@ -14,9 +14,10 @@ import net.minecraft.util.ResourceLocation;
 import java.io.IOException;
 
 public class GuiGUI extends GuiScreen {
-    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID, "textures/gui/gui.png");
+    private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID,
+            "textures/gui/gui.png");
     int xSize = 176;
-    int ySize = 200;
+    int ySize = 240;
     EntityPlayer player;
     EntitySoMZombie[] mobs;
     int index;
@@ -56,7 +57,7 @@ public class GuiGUI extends GuiScreen {
             // needed width to fit name
             butX = ((xSize - butWidth) / 2) + x;                                        //center
             // button
-            buttonList.add(new GuiButton(i, butX, y + 10 + (21 * i), butWidth, 20,
+            buttonList.add(new GuiButton(i, butX, y + 15 + (21 * i), butWidth, 20,
                             mobs[i].getName()));
         }
     }

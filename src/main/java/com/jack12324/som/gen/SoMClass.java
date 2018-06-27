@@ -4,6 +4,7 @@ public enum SoMClass {
     // 0.0 = no change
     // 1.0 = 100% increase
     //-1.0 = 100% decrease
+    //TODO negative values on high tiers results in 0 point stats
     TANK(1.0, 0.0, 1.0, -0.5, -0.5, 3.0, -0.5, 0.0, 0.0, 0.0, 0.0),
     BERSERKER(-0.5, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0),
     KNIGHT(0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0),
