@@ -19,7 +19,7 @@ public class Leveling {
     public static ArrayList<Integer> playerXP = new ArrayList<>();
 
     @SubscribeEvent
-    private void craftXP(PlayerEvent.ItemCraftedEvent event) {
+    public void craftXP(PlayerEvent.ItemCraftedEvent event) {
         int index = MobTracker.players.indexOf(event.player.getUniqueID());
         playerXP.set(index, playerXP.get(index) + 1);
         if (checkLevelUp(index))
@@ -28,7 +28,7 @@ public class Leveling {
     }
 
     @SubscribeEvent
-    private void SmeltXP(PlayerEvent.ItemSmeltedEvent event) {
+    public void SmeltXP(PlayerEvent.ItemSmeltedEvent event) {
         int index = MobTracker.players.indexOf(event.player.getUniqueID());
         playerXP.set(index, playerXP.get(index) + 1);
         if (checkLevelUp(index))
@@ -37,7 +37,7 @@ public class Leveling {
     }
 
     @SubscribeEvent
-    private void killXP(LivingDeathEvent event) {
+    public void killXP(LivingDeathEvent event) {
         if (event.getSource().getTrueSource() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
             int index = MobTracker.players.indexOf(player.getUniqueID());

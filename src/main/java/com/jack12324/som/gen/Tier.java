@@ -30,6 +30,24 @@ public enum Tier {
         return tierMultiplier;
     }
 
+    public int tierNum() {
+        switch (this) {
+            case BASIC:
+                return 0;
+            case COMMON:
+                return 1;
+            case RARE:
+                return 2;
+            case EPIC:
+                return 3;
+            case LEGENDARY:
+                return 4;
+            case DEITY:
+                return 5;
+        }
+        return 0;
+    }
+
     public boolean isGreaterTier(Tier tier) {
         return this.invulnerableRolls() > tier.invulnerableRolls();
     }

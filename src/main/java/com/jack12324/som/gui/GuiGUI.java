@@ -31,6 +31,7 @@ public class GuiGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -42,10 +43,18 @@ public class GuiGUI extends GuiScreen {
         fontRenderer.drawString(name, x + (xSize / 2 - fontRenderer.getStringWidth(name) / 2),
                         y + 6, 0x404040);
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        for (GuiButton button : buttonList) {
+            if (button instanceof mobButton) {
+                if (button.isMouseOver())
+                    drawHoveringText(button.displayString, mouseX, mouseY);
+            }
+        }
     }
 
     @Override
     public void initGui() {
+        buttonList.clear();
         int butX;
         int butWidth;
         int x = (width - xSize) / 2;
@@ -57,8 +66,7 @@ public class GuiGUI extends GuiScreen {
             // needed width to fit name
             butX = ((xSize - butWidth) / 2) + x;                                        //center
             // button
-            buttonList.add(new GuiButton(i, butX, y + 15 + (21 * i), butWidth, 20,
-                            mobs[i].getName()));
+            buttonList.add(new mobButton(mobs[i], i, butX, y + 15 + (22 * i)));
         }
     }
 
