@@ -21,8 +21,8 @@ import java.util.List;
 public class GuiGUI extends GuiScreen {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID,
             "textures/gui/gui.png");
-    int xSize = 176;
-    int ySize = 240;
+    int xSize = 221;
+    int ySize = 166;
     EntityPlayer player;
     EntitySoMZombie[] mobs;
     int index;
@@ -43,19 +43,21 @@ public class GuiGUI extends GuiScreen {
         GlStateManager.color(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(BG_TEXTURE);
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        //draw XP bar
+        int xBar = x + 8;
+        int yBar = y + 8;
+        int ExToNext = SoMConst.levels[MobTracker.playerLevels.get(index)];
+        double barPer = (Leveling.playerXP.get(index) / (double) ExToNext);
+        drawTexturedModalRect(xBar, (int) (yBar + (150 - (barPer * 150))), 221, (int) (150 - (barPer * 150)), 20, (int) (barPer * 150));
+        drawTexturedModalRect(xBar, yBar, 241, 0, 15, 150);
+        HoverChecker barHover = new HoverChecker(yBar, yBar + 150, xBar, xBar + 20, 0);
+        List<String> hovering = new ArrayList<>();
 
         String name = I18n.format(SoMBlocks.gui.getUnlocalizedName() + ".name");
         fontRenderer.drawString(name, x + (xSize / 2 - fontRenderer.getStringWidth(name) / 2),
                         y + 6, 0x404040);
 
-        //draw XP bar
-        int xBar = x / 4;
-        int yBar = y / 2;
-        int ExToNext = SoMConst.levels[MobTracker.playerLevels.get(index)];
-        int barH = (int) (100 * Leveling.playerXP.get(index) / (double) ExToNext);
-        drawTexturedModalRect(xBar, yBar, 177, barH, 40, barH);
-        HoverChecker barHover = new HoverChecker(yBar, yBar + 100, xBar, xBar + 40, 0);
-        List<String> hovering = new ArrayList<>();
+
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -71,7 +73,7 @@ public class GuiGUI extends GuiScreen {
         if (barHover.checkHover(mouseX, mouseY)) {
             hovering.clear();
             hovering.add("Player Level: " + MobTracker.playerLevels.get(index));               //TODO localization
-            hovering.add("Progress: " + barH * 100 + "%");
+            hovering.add("Progress: " + (int) (barPer * 100) + "%");
             hovering.add("XP: " + Leveling.playerXP.get(index) + "/" + ExToNext);
             drawHoveringText(hovering, mouseX, mouseY);
         }

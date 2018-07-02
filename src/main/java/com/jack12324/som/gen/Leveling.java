@@ -19,7 +19,7 @@ public class Leveling {
     public static ArrayList<Integer> playerXP = new ArrayList<>();
 
     @SubscribeEvent
-    public void craftXP(PlayerEvent.ItemCraftedEvent event) {
+    public static void craftXP(PlayerEvent.ItemCraftedEvent event) {
         int index = MobTracker.players.indexOf(event.player.getUniqueID());
         playerXP.set(index, playerXP.get(index) + 1);
         if (checkLevelUp(index))
@@ -28,7 +28,7 @@ public class Leveling {
     }
 
     @SubscribeEvent
-    public void SmeltXP(PlayerEvent.ItemSmeltedEvent event) {
+    public static void SmeltXP(PlayerEvent.ItemSmeltedEvent event) {
         int index = MobTracker.players.indexOf(event.player.getUniqueID());
         playerXP.set(index, playerXP.get(index) + 1);
         if (checkLevelUp(index))
@@ -37,7 +37,7 @@ public class Leveling {
     }
 
     @SubscribeEvent
-    public void killXP(LivingDeathEvent event) {
+    public static void killXP(LivingDeathEvent event) {
         if (event.getSource().getTrueSource() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
             int index = MobTracker.players.indexOf(player.getUniqueID());
@@ -57,14 +57,14 @@ public class Leveling {
      * @param index index of player to check
      * @return true if the player is below level 99 and has sufficient XP to level up, false otherwise
      */
-    private boolean checkLevelUp(int index) {
+    private static boolean checkLevelUp(int index) {
         if (playerLevels.get(index) < 99) {
             return playerXP.get(index) >= SoMConst.levels[playerLevels.get(index)];
         }
         return false;
     }
 
-    private void levelUp(int index) {
+    private static void levelUp(int index) {
         playerLevels.set(index, playerLevels.get(index) + 1);
         int remainder = playerXP.get(index) - SoMConst.levels[playerLevels.get(index)];
         playerXP.set(index, remainder);

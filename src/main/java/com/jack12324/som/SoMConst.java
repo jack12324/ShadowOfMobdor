@@ -6,6 +6,6 @@ public class SoMConst {
     static {
         levels[0] = 0;
         for (int i = 1; i < levels.length; i++)
-            levels[i] = (int) (100 * Math.pow(1.075, i));
+            levels[i] = (int) (100 * Math.pow(1.075, i - 1));
     }
 }
