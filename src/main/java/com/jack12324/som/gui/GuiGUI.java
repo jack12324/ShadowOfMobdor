@@ -1,8 +1,10 @@
 package com.jack12324.som.gui;
 
 import com.jack12324.som.ShadowOfMobdor;
+import com.jack12324.som.SoMConst;
 import com.jack12324.som.blocks.SoMBlocks;
 import com.jack12324.som.entity.EntitySoMZombie;
+import com.jack12324.som.gen.Leveling;
 import com.jack12324.som.gen.MobTracker;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -10,8 +12,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.HoverChecker;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiGUI extends GuiScreen {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID,
@@ -42,13 +47,33 @@ public class GuiGUI extends GuiScreen {
         String name = I18n.format(SoMBlocks.gui.getUnlocalizedName() + ".name");
         fontRenderer.drawString(name, x + (xSize / 2 - fontRenderer.getStringWidth(name) / 2),
                         y + 6, 0x404040);
+
+        //draw XP bar
+        int xBar = x / 4;
+        int yBar = y / 2;
+        int ExToNext = SoMConst.levels[MobTracker.playerLevels.get(index)];
+        int barH = (int) (100 * Leveling.playerXP.get(index) / (double) ExToNext);
+        drawTexturedModalRect(xBar, yBar, 177, barH, 40, barH);
+        HoverChecker barHover = new HoverChecker(yBar, yBar + 100, xBar, xBar + 40, 0);
+        List<String> hovering = new ArrayList<>();
+
         super.drawScreen(mouseX, mouseY, partialTicks);
 
+        //hovering text for buttons
         for (GuiButton button : buttonList) {
             if (button instanceof mobButton) {
                 if (button.isMouseOver())
                     drawHoveringText(button.displayString, mouseX, mouseY);
             }
+        }
+
+        //hovering text for xp bar
+        if (barHover.checkHover(mouseX, mouseY)) {
+            hovering.clear();
+            hovering.add("Player Level: " + MobTracker.playerLevels.get(index));               //TODO localization
+            hovering.add("Progress: " + barH * 100 + "%");
+            hovering.add("XP: " + Leveling.playerXP.get(index) + "/" + ExToNext);
+            drawHoveringText(hovering, mouseX, mouseY);
         }
     }
 
