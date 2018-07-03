@@ -33,7 +33,7 @@ public class EntitySoMZombie extends EntityZombie {
     private String name;
 
     public static final ResourceLocation LOOT = new ResourceLocation(ShadowOfMobdor.MODID, "entities/zombie");
-    public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);
+    public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);//TODO add other parameters to data manager for easy syncing
 
     public ArrayList<Weaknesses> getMobWk() {
         return mobWk;
@@ -318,6 +318,7 @@ public class EntitySoMZombie extends EntityZombie {
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("textureNumber", getTextureNumber());
+        //TODO write name, wk, str to NBT?
     }
 
     @Override

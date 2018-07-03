@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class MobTracker {
-    public static ArrayList<EntitySoMZombie[]> mobs = new ArrayList<>();
+    public static ArrayList<EntitySoMZombie[]> mobs = new ArrayList<>(); //TODO array of UUID instead of entities?
     public static ArrayList<UUID> players = new ArrayList<>();
     public static ArrayList<Integer> playerLevels = new ArrayList<>();
 
