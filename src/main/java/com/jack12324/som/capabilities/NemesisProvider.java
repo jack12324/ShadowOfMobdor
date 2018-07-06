@@ -3,39 +3,43 @@ package com.jack12324.som.capabilities;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-/**
- * Mana provider
- * <p>
- * This class is responsible for providing a capability. Other modders may
- * attach their own provider with implementation that returns another
- * implementation of IMana to the target's (Entity, TE, ItemStack, etc.) disposal.
- */
-public class NemesisProvider implements ICapabilitySerializable<NBTBase> {
-    @CapabilityInject(INemesisList.class)
-    public static final Capability<INemesisList> NEM = null;
+public class NemesisProvider implements ICapabilitySerializable<NBTBase> {//todo can make generic if need more capabilities
+    protected final Capability<INemesisList> NEM;
+    protected final INemesisList instance;
 
-    private INemesisList instance = NEM.getDefaultInstance();
+    public NemesisProvider(Capability<INemesisList> capability, INemesisList instance) {
+        this.NEM = capability;
+        this.instance = instance;
+    }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return capability == NEM;
+        return capability == getCapability();
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        return capability == NEM ? (T) NEM : null;
+        return capability == getCapability() ? getCapability().cast(getInstance()) : null;
     }
 
     @Override
     public NBTBase serializeNBT() {
-        return NEM.getStorage().writeNBT(NEM, this.instance, null);
+        return getCapability().writeNBT(getInstance(), null);
     }
 
     @Override
     public void deserializeNBT(NBTBase nbt) {
-        NEM.getStorage().readNBT(NEM, this.instance, null, nbt);
+        getCapability().readNBT(getInstance(), null, nbt);
+    }
+
+
+    public Capability<INemesisList> getCapability() {
+        return NEM;
+    }
+
+    public INemesisList getInstance() {
+        return instance;
     }
 }

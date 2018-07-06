@@ -1,10 +1,14 @@
 package com.jack12324.som;
 
 import com.jack12324.som.blocks.SoMBlocks;
+import com.jack12324.som.capabilities.INemesisList;
+import com.jack12324.som.capabilities.NemesisList;
+import com.jack12324.som.capabilities.NemesisStorage;
 import com.jack12324.som.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -32,8 +36,11 @@ public class ShadowOfMobdor {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
+        CapabilityManager.INSTANCE.register(INemesisList.class, new NemesisStorage(), () -> new NemesisList(null));
         proxy.preInit(event);
         logger.info("XXXpreinitXXX");
+
+
     }
 
     @Mod.EventHandler

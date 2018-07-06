@@ -4,6 +4,7 @@ import com.jack12324.som.entity.EntitySoMZombie;
 import net.minecraft.world.World;
 
 public class NemesisList implements INemesisList {
+
     private World world;
 
     public NemesisList(World world) {

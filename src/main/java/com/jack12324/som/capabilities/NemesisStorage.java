@@ -15,7 +15,7 @@ public class NemesisStorage implements Capability.IStorage<INemesisList> {
     public NBTBase writeNBT(Capability<INemesisList> capability, INemesisList instance, EnumFacing side) {
         NBTTagCompound nbt = new NBTTagCompound();
         for (int i = 0; i < instance.getMobs().length; i++)
-            nbt.setTag(i + "", instance.getMob(i).writeToNBT(new NBTTagCompound()));
+            nbt.setTag(i + "", instance.getMob(i).serializeNBT());
         return nbt;
     }
 
