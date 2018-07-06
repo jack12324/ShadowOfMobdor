@@ -3,6 +3,7 @@ package com.jack12324.som.gui;
 import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.SoMConst;
 import com.jack12324.som.blocks.SoMBlocks;
+import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.gen.Leveling;
 import com.jack12324.som.gen.MobTracker;
@@ -31,7 +32,7 @@ public class GuiGUI extends GuiScreen {
         super();
         this.player = player;
         index = MobTracker.players.indexOf(player.getUniqueID());
-        mobs = MobTracker.mobs.get(index);
+        mobs = player.getCapability(CapabilityHandler.NEM, null).getMobs();
     }
 
     @Override

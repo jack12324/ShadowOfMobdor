@@ -1,5 +1,6 @@
 package com.jack12324.som.gen;
 
+import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.entity.EntitySoMZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -26,12 +27,15 @@ public class MobTracker {
             playerLevels.add(1);
             Leveling.playerXP.add(0);
             players.add(event.player.getUniqueID());
-            mobs.add(new EntitySoMZombie[10]);
-            for (int i = 0; i < mobs.get(mobs.size() - 1).length; i++) {
-                mobs.get(mobs.size() - 1)[i] = new EntitySoMZombie(event.player.getEntityWorld(),
-                                playerLevels.get(playerLevels.size() - 1));
-                //mobs.get(mobs.size()-1)[i].print();
-            }
+//            mobs.add(new EntitySoMZombie[10]);
+//            for (int i = 0; i < mobs.get(mobs.size() - 1).length; i++) {
+//                mobs.get(mobs.size() - 1)[i] = new EntitySoMZombie(event.player.getEntityWorld(),
+//                                playerLevels.get(playerLevels.size() - 1));
+//                //mobs.get(mobs.size()-1)[i].print();
+//            }
+            for (int i = 0; i < 10; i++)
+                event.player.getCapability(CapabilityHandler.NEM, null).addMob(new EntitySoMZombie(event.player.getEntityWorld(),
+                        playerLevels.get(playerLevels.size() - 1)), i);
         }
         //testStatGen.testMobArray(mobs);
     }

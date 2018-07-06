@@ -12,6 +12,7 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -33,7 +34,7 @@ public class EntitySoMZombie extends EntityZombie {
     private String name;
 
     public static final ResourceLocation LOOT = new ResourceLocation(ShadowOfMobdor.MODID, "entities/zombie");
-    public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);//TODO add other parameters to data manager for easy syncing
+    public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);
 
     public ArrayList<Weaknesses> getMobWk() {
         return mobWk;
@@ -107,6 +108,7 @@ public class EntitySoMZombie extends EntityZombie {
     }
 
     public EntitySoMZombie(World worldIn) {
+        //todo needs to keep atributes consistant
         this(worldIn, 0);
     }
 
@@ -318,13 +320,49 @@ public class EntitySoMZombie extends EntityZombie {
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("textureNumber", getTextureNumber());
-        //TODO write name, wk, str to NBT?
+        compound.setInteger("som_level", level);
+        compound.setString("som_name", name);
+        compound.setString("som_tier", tier.name());
+        compound.setString("som_class", mobClass.name());
+        if (!mobWk.isEmpty())
+            compound.setTag("weaknesses", writeEnumListToNBT(mobWk));
+        if (!mobInv.isEmpty())
+            compound.setTag("inv", writeEnumListToNBT(mobInv));
+    }
+
+    private <T extends Enum> NBTTagList writeEnumListToNBT(ArrayList<T> listIn) {
+        NBTTagList list = new NBTTagList();
+        NBTTagCompound level;
+        for (int i = 0; i < listIn.size(); i++) {
+            level = new NBTTagCompound();
+            level.setString("" + i, listIn.get(i).name());
+            list.appendTag(level);
+        }
+        return list;
+    }
+
+    private <T extends Enum> ArrayList<T> readEnumListFromNBT(Class<T> c, NBTTagList listIn) {
+        NBTTagCompound level;
+        ArrayList<T> listOut = new ArrayList<T>();
+        for (int i = 0; i < listIn.tagCount(); i++) {
+            level = listIn.getCompoundTagAt(i);
+            listOut.add((T) T.valueOf(c, level.getString("" + i)));//todo not sure if this works
+        }
+        return listOut;
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         setTextureNum(compound.getInteger("textureNumber"));
+        this.level = compound.getInteger("som_level");
+        this.name = compound.getString("som_name");
+        this.tier = Tier.valueOf(compound.getString("som_tier"));
+        this.mobClass = SoMClass.valueOf(compound.getString("som_class"));
+        if (!mobWk.isEmpty())
+            this.mobWk = readEnumListFromNBT(Weaknesses.class, compound.getTagList("weaknesses", 10));
+        if (!mobWk.isEmpty())
+            this.mobInv = readEnumListFromNBT(Invulnerabilities.class, compound.getTagList("inv", 10));
 
     }
 }

@@ -16,6 +16,7 @@ public class ServerProxy implements CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
+
     }
 
     public void postInit(FMLPostInitializationEvent event) {
