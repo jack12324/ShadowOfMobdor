@@ -18,7 +18,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -67,8 +66,14 @@ public class EntitySoMZombie extends EntityZombie {
         setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
         setTexture(this.tier);
-        //TODO not sure about doing this but need it to display stats correctly I think. might be able to just call apply attributes instead
-        onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(0, 0, 0)), null);
+
+        applyModifiers();
+        this.setHealth(this.getMaxHealth());
+    }
+
+    public EntitySoMZombie(World worldIn) {
+        super(worldIn);
+        this.setSize(this.width * 1.25f, this.height * 1.25f);
     }
 
     /**
@@ -105,11 +110,6 @@ public class EntitySoMZombie extends EntityZombie {
             default:
                 setTextureNum(0);
         }
-    }
-
-    public EntitySoMZombie(World worldIn) {
-        //todo needs to keep atributes consistant
-        this(worldIn, 0);
     }
 
     public int getTextureNumber() {
@@ -200,10 +200,6 @@ public class EntitySoMZombie extends EntityZombie {
 
         this.setEquipmentBasedOnDifficulty(difficulty);//todo edit for this mod
         this.setEnchantmentBasedOnDifficulty(difficulty);//todo make methods for level also
-
-        applyModifiers();
-        this.setHealth(this.getMaxHealth());
-
 
         return livingdata;
     }
@@ -324,10 +320,8 @@ public class EntitySoMZombie extends EntityZombie {
         compound.setString("som_name", name);
         compound.setString("som_tier", tier.name());
         compound.setString("som_class", mobClass.name());
-        if (!mobWk.isEmpty())
-            compound.setTag("weaknesses", writeEnumListToNBT(mobWk));
-        if (!mobInv.isEmpty())
-            compound.setTag("inv", writeEnumListToNBT(mobInv));
+        compound.setTag("weaknesses", writeEnumListToNBT(mobWk));
+        compound.setTag("inv", writeEnumListToNBT(mobInv));
     }
 
     private <T extends Enum> NBTTagList writeEnumListToNBT(ArrayList<T> listIn) {
@@ -357,12 +351,14 @@ public class EntitySoMZombie extends EntityZombie {
         setTextureNum(compound.getInteger("textureNumber"));
         this.level = compound.getInteger("som_level");
         this.name = compound.getString("som_name");
+        setCustomNameTag(this.name);
         this.tier = Tier.valueOf(compound.getString("som_tier"));
+        setTexture(this.tier);
         this.mobClass = SoMClass.valueOf(compound.getString("som_class"));
-        if (!mobWk.isEmpty())
-            this.mobWk = readEnumListFromNBT(Weaknesses.class, compound.getTagList("weaknesses", 10));
-        if (!mobWk.isEmpty())
-            this.mobInv = readEnumListFromNBT(Invulnerabilities.class, compound.getTagList("inv", 10));
+        this.mobWk = readEnumListFromNBT(Weaknesses.class, compound.getTagList("weaknesses", 10));
+        this.mobInv = readEnumListFromNBT(Invulnerabilities.class, compound.getTagList("inv", 10));
 
+        applyModifiers();
+        this.setHealth(this.getMaxHealth());
     }
 }

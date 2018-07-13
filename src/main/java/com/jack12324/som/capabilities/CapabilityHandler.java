@@ -1,6 +1,9 @@
 package com.jack12324.som.capabilities;
 
 import com.jack12324.som.ShadowOfMobdor;
+import com.jack12324.som.capabilities.nemesis_cap.INemesisList;
+import com.jack12324.som.capabilities.nemesis_cap.NemesisList;
+import com.jack12324.som.capabilities.nemesis_cap.NemesisProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;

@@ -83,18 +83,19 @@ public class GuiGUI extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.clear();
-        int butX;
         int butWidth;
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
+        int butX = x + 30;
 
         //adds button for each mob
         for (int i = 0; i < mobs.length; i++) {
-            butWidth = calcButtonWidth() + 4;         //calculate
-            // needed width to fit name
-            butX = ((xSize - butWidth) / 2) + x;                                        //center
-            // button
-            buttonList.add(new mobButton(mobs[i], i, butX, y + 15 + (22 * i)));
+            butWidth = calcButtonWidth() + 4;
+            buttonList.add(new mobButton(mobs[i], i, butX, i < mobs.length / 2 ? y + 30 : y + 54));
+            if (i == mobs.length / 2 - 1)
+                butX = x + 30;
+            else
+                butX += 23;
         }
     }
 

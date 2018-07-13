@@ -1,9 +1,9 @@
 package com.jack12324.som;
 
 import com.jack12324.som.blocks.SoMBlocks;
-import com.jack12324.som.capabilities.INemesisList;
-import com.jack12324.som.capabilities.NemesisList;
-import com.jack12324.som.capabilities.NemesisStorage;
+import com.jack12324.som.capabilities.nemesis_cap.INemesisList;
+import com.jack12324.som.capabilities.nemesis_cap.NemesisList;
+import com.jack12324.som.capabilities.nemesis_cap.NemesisStorage;
 import com.jack12324.som.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
