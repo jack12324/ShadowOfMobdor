@@ -56,4 +56,14 @@ public class NemesisList implements INemesisList {
     public void setWorld(World world) {
         this.world = world;
     }
+
+    @Override
+    public boolean isEmpty() {
+        for (int i = 0; i < mobs.length; i++) {
+            if (!(mobs[i] == null))
+                return false;
+        }
+        return true;
+    }
+
 }

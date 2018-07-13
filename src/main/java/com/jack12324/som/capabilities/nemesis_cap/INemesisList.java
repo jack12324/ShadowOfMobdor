@@ -20,5 +20,7 @@ public interface INemesisList {//todo make entitySoMZombie generic
     World getWorld();
 
     void setWorld(World world);
+
+    boolean isEmpty();
 }
 

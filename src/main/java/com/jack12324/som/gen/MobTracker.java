@@ -2,21 +2,17 @@ package com.jack12324.som.gen;
 
 import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.entity.EntitySoMZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class MobTracker {
-    public static ArrayList<EntitySoMZombie[]> mobs = new ArrayList<>(); //TODO array of UUID instead of entities?
-    public static ArrayList<UUID> players = new ArrayList<>();
+    public static ArrayList<UUID> players = new ArrayList<>();//todo these need to go
     public static ArrayList<Integer> playerLevels = new ArrayList<>();
 
     @SubscribeEvent
@@ -27,8 +23,8 @@ public class MobTracker {
             Leveling.playerXP.add(0);
             players.add(event.player.getUniqueID());
 
-            //if first time player, generate mobs
-            if (event.player.getCapability(CapabilityHandler.NEM, null).getMobs().length <= 0) {
+            //if first time player, generate mobs todo place into default cap?
+            if (event.player.getCapability(CapabilityHandler.NEM, null).isEmpty()) {
                 for (int i = 0; i < 10; i++)
                     event.player.getCapability(CapabilityHandler.NEM, null).addMob(new EntitySoMZombie(event.player.getEntityWorld(),
                             playerLevels.get(playerLevels.size() - 1)), i);
@@ -37,6 +33,7 @@ public class MobTracker {
         //testStatGen.testMobArray(mobs);
     }
 
+    /*
     @SubscribeEvent
     public static void playerDied(LivingDeathEvent event) {
         if (!(event.getEntity().getEntityWorld().isRemote)) {
@@ -57,6 +54,7 @@ public class MobTracker {
             }
         }
     }
+    */
 
     @SubscribeEvent
     public static void catchCrit(CriticalHitEvent event) {
@@ -70,7 +68,7 @@ public class MobTracker {
         mob.setDead();//todo make sure this doesn't drop anything
         mob.reRoll(index);//todo something special?
     }
-
+/*
     public static void removeMob(EntitySoMZombie mob) {
         Random rand = new Random(); //todo add event to survive and level up
         for (EntitySoMZombie[] mobArray : mobs) {
@@ -80,4 +78,5 @@ public class MobTracker {
             }
         }
     }
+    */
 }

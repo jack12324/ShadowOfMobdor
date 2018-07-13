@@ -14,8 +14,11 @@ public class NemesisStorage implements Capability.IStorage<INemesisList> {
     @Override
     public NBTBase writeNBT(Capability<INemesisList> capability, INemesisList instance, EnumFacing side) {
         NBTTagCompound nbt = new NBTTagCompound();
-        for (int i = 0; i < instance.getMobs().length; i++)
-            nbt.setTag(i + "", instance.getMob(i).serializeNBT());
+        if (!instance.isEmpty()) {
+            for (int i = 0; i < instance.getMobs().length; i++)
+                nbt.setTag(i + "", instance.getMob(i).serializeNBT());
+        }
+
         return nbt;
     }
 
