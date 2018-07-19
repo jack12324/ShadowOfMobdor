@@ -7,27 +7,18 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 @Mod.EventBusSubscriber
 public class MobTracker {
-    public static ArrayList<UUID> players = new ArrayList<>();//todo these need to go
-    public static ArrayList<Integer> playerLevels = new ArrayList<>();
 
     @SubscribeEvent
     public static void newPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!players.contains(event.player.getUniqueID()) && !event.player
-                .getEntityWorld().isRemote) {
-            playerLevels.add(1);
-            Leveling.playerXP.add(0);
-            players.add(event.player.getUniqueID());
+        if (!event.player.getEntityWorld().isRemote) {
 
             //if first time player, generate mobs todo place into default cap?
             if (event.player.getCapability(CapabilityHandler.NEM, null).isEmpty()) {
                 for (int i = 0; i < 10; i++)
                     event.player.getCapability(CapabilityHandler.NEM, null).addMob(new EntitySoMZombie(event.player.getEntityWorld(),
-                            playerLevels.get(playerLevels.size() - 1)), i);
+                            event.player.getCapability(CapabilityHandler.XP, null).getLevel()), i);
             }
         }
         //testStatGen.testMobArray(mobs);

@@ -1,4 +1,4 @@
-package com.jack12324.som.capabilities.nemesis_cap;
+package com.jack12324.som.capabilities.nemesis;
 
 import com.jack12324.som.entity.EntitySoMZombie;
 import net.minecraft.world.World;

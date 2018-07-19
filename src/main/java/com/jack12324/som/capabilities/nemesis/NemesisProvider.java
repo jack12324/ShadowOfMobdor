@@ -1,4 +1,4 @@
-package com.jack12324.som.capabilities.nemesis_cap;
+package com.jack12324.som.capabilities.nemesis;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

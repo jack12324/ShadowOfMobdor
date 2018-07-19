@@ -1,9 +1,12 @@
 package com.jack12324.som;
 
 import com.jack12324.som.blocks.SoMBlocks;
-import com.jack12324.som.capabilities.nemesis_cap.INemesisList;
-import com.jack12324.som.capabilities.nemesis_cap.NemesisList;
-import com.jack12324.som.capabilities.nemesis_cap.NemesisStorage;
+import com.jack12324.som.capabilities.experience.Experience;
+import com.jack12324.som.capabilities.experience.ExperienceStorage;
+import com.jack12324.som.capabilities.experience.IExperience;
+import com.jack12324.som.capabilities.nemesis.INemesisList;
+import com.jack12324.som.capabilities.nemesis.NemesisList;
+import com.jack12324.som.capabilities.nemesis.NemesisStorage;
 import com.jack12324.som.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -37,6 +40,7 @@ public class ShadowOfMobdor {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         CapabilityManager.INSTANCE.register(INemesisList.class, new NemesisStorage(), () -> new NemesisList(null));
+        CapabilityManager.INSTANCE.register(IExperience.class, new ExperienceStorage(), () -> new Experience(null));
         proxy.preInit(event);
         logger.info("XXXpreinitXXX");
 

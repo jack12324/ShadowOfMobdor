@@ -2,6 +2,8 @@ package com.jack12324.som.gen;
 
 
 import com.jack12324.som.SoMConst;
+import com.jack12324.som.capabilities.CapabilityHandler;
+import com.jack12324.som.capabilities.experience.IExperience;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -9,20 +11,16 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-import java.util.ArrayList;
-
-import static com.jack12324.som.gen.MobTracker.playerLevels;
 
 @Mod.EventBusSubscriber
 public class Leveling {
 
-    public static ArrayList<Integer> playerXP = new ArrayList<>();
 
     @SubscribeEvent
     public static void craftXP(PlayerEvent.ItemCraftedEvent event) {
-        int index = MobTracker.players.indexOf(event.player.getUniqueID());
-        playerXP.set(index, playerXP.get(index) + 1);
-        if (checkLevelUp(index))
+        IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
+        capability.setExperience(capability.getExperience() + 1);
+        if (checkLevelUp(capability))
             levelUp(index);
 
     }
