@@ -1,6 +1,7 @@
 package com.jack12324.som.entity;
 
 import com.jack12324.som.ShadowOfMobdor;
+import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.gen.*;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,6 +26,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class EntitySoMZombie extends EntityZombie {
+    private EntityPlayer player;
     private int level;
     private Tier tier;
     private SoMClass mobClass;
@@ -55,9 +57,10 @@ public class EntitySoMZombie extends EntityZombie {
         return mobClass;
     }
 
-    public EntitySoMZombie(World worldIn, int playerLvl) {
-        super(worldIn);
-        this.level = StatGeneration.rollLevel(playerLvl);
+    public EntitySoMZombie(EntityPlayer player) {
+        super(player.getEntityWorld());
+        this.player = player;
+        this.level = StatGeneration.rollLevel(player.getCapability(CapabilityHandler.XP, null).getLevel());
         this.tier = StatGeneration.rollTier(this.level);
         this.mobClass = StatGeneration.rollClass();
         mobWk = StatGeneration.rollWeaknesses(this.tier.weaknessRolls(), this.mobWk);
@@ -110,6 +113,10 @@ public class EntitySoMZombie extends EntityZombie {
             default:
                 setTextureNum(0);
         }
+    }
+
+    public void setPlayer(EntityPlayer player) {
+        this.player = player;
     }
 
     public int getTextureNumber() {
@@ -207,7 +214,7 @@ public class EntitySoMZombie extends EntityZombie {
 
     @Override
     public void onDeath(DamageSource cause) {
-        MobTracker.removeMob(this);
+        MobTracker.removeMob(this.player, this);
         super.onDeath(cause);
     }
 

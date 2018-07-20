@@ -1,5 +1,6 @@
 package com.jack12324.som.blocks;
 
+import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.tiles.TileEntityTestSpawner;
 import net.minecraft.block.material.Material;
@@ -47,7 +48,8 @@ public class BlockTestSpawner extends BlockTE<TileEntityTestSpawner> {
             } else {
                 TextComponentTranslation component = new TextComponentTranslation("message.som.spawning", tile.getLevel());
                 player.sendStatusMessage(component, false);
-                EntitySoMZombie mob = new EntitySoMZombie(world, tile.getLevel());
+                player.getCapability(CapabilityHandler.XP, null).setLevel(tile.getLevel());
+                EntitySoMZombie mob = new EntitySoMZombie(player);
                 mob.setPosition(tile.getPos().getX(), tile.getPos().getY() + 2,
                                 tile.getPos().getZ());
                 mob.onInitialSpawn(world.getDifficultyForLocation(tile.getPos()), null);

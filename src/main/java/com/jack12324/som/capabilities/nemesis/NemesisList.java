@@ -1,14 +1,17 @@
 package com.jack12324.som.capabilities.nemesis;
 
 import com.jack12324.som.entity.EntitySoMZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class NemesisList implements INemesisList {
 
     private World world;
+    private EntityPlayer player;
 
-    public NemesisList(World world) {
-        this.world = world;
+    public NemesisList(EntityPlayer player) {
+        this.world = player.getEntityWorld();
+        this.player = player;
     }
 
     private EntitySoMZombie mobs[] = new EntitySoMZombie[10];
@@ -40,6 +43,11 @@ public class NemesisList implements INemesisList {
     @Override
     public EntitySoMZombie getMob(int index) {
         return mobs[index];
+    }
+
+    @Override
+    public EntityPlayer getPlayer() {
+        return this.player;
     }
 
     @Override

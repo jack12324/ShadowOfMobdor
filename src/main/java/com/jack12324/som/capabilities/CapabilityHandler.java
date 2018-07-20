@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CapabilityHandler {
     @CapabilityInject(INemesisList.class)
     public static final Capability<INemesisList> NEM = null;
+    @CapabilityInject(IExperience.class)
     public static final Capability<IExperience> XP = null;
 
     @SubscribeEvent
@@ -32,11 +33,12 @@ public class CapabilityHandler {
         if (!(event.getObject() instanceof EntityPlayer))
             return;
         else {
-            final NemesisList NEMS = new NemesisList(event.getObject().getEntityWorld());
-            event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "nemesis"), new NemesisProvider(NEM, NEMS));
 
             final Experience SOMXP = new Experience((EntityPlayer) event.getObject());
             event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "experience"), new ExperienceProvider(XP, SOMXP));
+
+            final NemesisList NEMS = new NemesisList((EntityPlayer) event.getObject());
+            event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "nemesis"), new NemesisProvider(NEM, NEMS));
         }
     }
 }

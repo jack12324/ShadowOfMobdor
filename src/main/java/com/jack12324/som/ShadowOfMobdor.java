@@ -39,8 +39,8 @@ public class ShadowOfMobdor {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        CapabilityManager.INSTANCE.register(INemesisList.class, new NemesisStorage(), () -> new NemesisList(null));
         CapabilityManager.INSTANCE.register(IExperience.class, new ExperienceStorage(), () -> new Experience(null));
+        CapabilityManager.INSTANCE.register(INemesisList.class, new NemesisStorage(), () -> new NemesisList(null));
         proxy.preInit(event);
         logger.info("XXXpreinitXXX");
 

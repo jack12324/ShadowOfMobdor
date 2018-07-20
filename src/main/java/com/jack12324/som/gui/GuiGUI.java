@@ -4,9 +4,8 @@ import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.SoMConst;
 import com.jack12324.som.blocks.SoMBlocks;
 import com.jack12324.som.capabilities.CapabilityHandler;
+import com.jack12324.som.capabilities.experience.IExperience;
 import com.jack12324.som.entity.EntitySoMZombie;
-import com.jack12324.som.gen.Leveling;
-import com.jack12324.som.gen.MobTracker;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,13 +25,13 @@ public class GuiGUI extends GuiScreen {
     int ySize = 166;
     EntityPlayer player;
     EntitySoMZombie[] mobs;
-    int index;
+    IExperience xpCapability;
 
     public GuiGUI(EntityPlayer player) {
         super();
         this.player = player;
-        index = MobTracker.players.indexOf(player.getUniqueID());
         mobs = player.getCapability(CapabilityHandler.NEM, null).getMobs();
+        xpCapability = this.player.getCapability(CapabilityHandler.XP, null);
     }
 
     @Override
@@ -47,9 +46,9 @@ public class GuiGUI extends GuiScreen {
         //draw XP bar
         int xBar = x + 8;
         int yBar = y + 8;
-        int ExToNext = SoMConst.levels[MobTracker.playerLevels.get(index)];
-        double barPer = (Leveling.playerXP.get(index) / (double) ExToNext);
-        drawTexturedModalRect(xBar, (int) (yBar + (150 - (barPer * 150))), 221, (int) (150 - (barPer * 150)), 20, (int) (barPer * 150));
+        int ExToNext = SoMConst.levels[xpCapability.getLevel()];
+        double barPer = (xpCapability.getExperience() / (double) ExToNext);
+        drawTexturedModalRect(xBar, (int) (yBar + (150 - (barPer * 150))), 221, (int) (150 - (barPer * 150)), 20, (int) (barPer * 150) + 1);
         drawTexturedModalRect(xBar, yBar, 241, 0, 15, 150);
         HoverChecker barHover = new HoverChecker(yBar, yBar + 150, xBar, xBar + 20, 0);
         List<String> hovering = new ArrayList<>();
@@ -73,9 +72,9 @@ public class GuiGUI extends GuiScreen {
         //hovering text for xp bar
         if (barHover.checkHover(mouseX, mouseY)) {
             hovering.clear();
-            hovering.add("Player Level: " + MobTracker.playerLevels.get(index));               //TODO localization
+            hovering.add("Player Level: " + xpCapability.getLevel());               //TODO localization
             hovering.add("Progress: " + (int) (barPer * 100) + "%");
-            hovering.add("XP: " + Leveling.playerXP.get(index) + "/" + ExToNext);
+            hovering.add("XP: " + xpCapability.getExperience() + "/" + ExToNext);
             drawHoveringText(hovering, mouseX, mouseY);
         }
     }
