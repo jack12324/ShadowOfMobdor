@@ -26,23 +26,40 @@ public class MobTracker {
                     event.player.getCapability(CapabilityHandler.NEM, null).addMob(new EntitySoMZombie(event.player), i);
             }
         }
-        //testStatGen.testMobArray(mobs);
     }
 
 
     @SubscribeEvent
     public static void playerDied(LivingDeathEvent event) {
+        //server side
         if (!(event.getEntity().getEntityWorld().isRemote)) {
+            //is a player
             if (event.getEntity() instanceof EntityPlayer) {
 
                 EntityPlayer player = (EntityPlayer) event.getEntity();
                 IExperience playerXP = player.getCapability(CapabilityHandler.XP, null);
                 INemesisList mobs = player.getCapability(CapabilityHandler.NEM, null);
+
+                //iterate over every mod tied to player
                 for (int i = 0; i < mobs.getMobs().length; i++) {
-                    if (mobs.getMob(i) == null)
+                    EntitySoMZombie target = mobs.getMob(i);
+
+                    //add mob if they have been removed
+                    if (target == null)
                         mobs.addMob(new EntitySoMZombie(player), i);
-                    else
-                        mobs.getMob(i).reRoll(playerXP.getLevel()); //todo change this into event instead of automatic re roll
+
+                        //attempt to revive killed mobs, otherwise generate new
+                    else if (target.isKilled()) {
+                        Random rand = new Random();
+
+                        if (rand.nextInt(100) < 50) { //todo make something better than random chance
+                            target.setKilled(false);
+                            target.setHealth(target.getMaxHealth());
+                            target.reRoll(playerXP.getLevel(), 2);
+                        } else
+                            mobs.addMob(new EntitySoMZombie(player), i);
+                    } else
+                        target.reRoll(playerXP.getLevel()); //todo change this into event instead of automatic re roll
                 }
                 if (event.getSource().getTrueSource() instanceof EntitySoMZombie)
                     mobKilledPlayer((EntitySoMZombie) event.getSource().getTrueSource(), playerXP.getLevel());
@@ -61,12 +78,11 @@ public class MobTracker {
 
     public static void mobKilledPlayer(EntitySoMZombie mob, int level) {
         mob.setDead();//todo make sure this doesn't drop anything
-        mob.reRoll(level);//todo something special?
+        mob.reRoll(level, 4);//todo something special?
     }
 
     public static void removeMob(EntityPlayer player, EntitySoMZombie mob) {
         Random rand = new Random(); //todo add event to survive and level up
         player.getCapability(CapabilityHandler.NEM, null).removeMob(mob);
     }
-
 }

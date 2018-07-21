@@ -145,6 +145,11 @@ public class GuiDESC extends GuiScreen {
         int x = (width - xSize) / 2;
 
         buttonList.add(new GuiButton(1, x - 20, y, 20, 20, "X"));
+        buttonList.add(new GuiButton(2, x - 20, y + 21, 20, 20, "Spawn"));
+        if (!this.player.isCreative()) {
+            buttonList.get(1).enabled = false;
+            buttonList.get(1).visible = false;
+        }
     }
 
 
@@ -152,7 +157,11 @@ public class GuiDESC extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id == 1)
             ShadowOfMobdor.proxy.openGUI(0, player, null);
-        else
+        else if (button.id == 2) {
+            this.mob.setPosition(this.player.getPosition().getX(), this.player.getPosition().getY(), this.player.getPosition().getZ());
+            this.mob.onInitialSpawn(this.player.getEntityWorld().getDifficultyForLocation(this.player.getPosition()), null);
+            this.player.getEntityWorld().spawnEntity(this.mob);
+        } else
             super.actionPerformed(button);
 
     }

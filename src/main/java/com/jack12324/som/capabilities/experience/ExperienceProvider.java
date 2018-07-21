@@ -5,7 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ExperienceProvider implements ICapabilitySerializable<NBTBase> {//todo can make generic if need more capabilities
+public class ExperienceProvider implements ICapabilitySerializable<NBTBase> {
     protected final Capability<IExperience> SOMXP;
     protected final IExperience instance;
 

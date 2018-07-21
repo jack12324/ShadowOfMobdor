@@ -26,7 +26,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class EntitySoMZombie extends EntityZombie {
-    private EntityPlayer player;
+    private boolean killed;
+    private EntityPlayer player = null;
     private int level;
     private Tier tier;
     private SoMClass mobClass;
@@ -37,26 +38,6 @@ public class EntitySoMZombie extends EntityZombie {
     public static final ResourceLocation LOOT = new ResourceLocation(ShadowOfMobdor.MODID, "entities/zombie");
     public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);
 
-    public ArrayList<Weaknesses> getMobWk() {
-        return mobWk;
-    }
-
-    public ArrayList<Invulnerabilities> getMobInv() {
-        return mobInv;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public Tier getTier() {
-        return tier;
-    }
-
-    public SoMClass getMobClass() {
-        return mobClass;
-    }
-
     public EntitySoMZombie(EntityPlayer player) {
         super(player.getEntityWorld());
         this.player = player;
@@ -66,6 +47,7 @@ public class EntitySoMZombie extends EntityZombie {
         mobWk = StatGeneration.rollWeaknesses(this.tier.weaknessRolls(), this.mobWk);
         mobInv = StatGeneration.rollInvulnerabilities(this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
         this.name = StatGeneration.generateName(mobInv);
+        this.killed = false;
         setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
         setTexture(this.tier);
@@ -121,6 +103,34 @@ public class EntitySoMZombie extends EntityZombie {
 
     public int getTextureNumber() {
         return this.dataManager.get(TEXTURE_NUM);
+    }
+
+    public ArrayList<Weaknesses> getMobWk() {
+        return mobWk;
+    }
+
+    public ArrayList<Invulnerabilities> getMobInv() {
+        return mobInv;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public Tier getTier() {
+        return tier;
+    }
+
+    public SoMClass getMobClass() {
+        return mobClass;
+    }
+
+    public boolean isKilled() {
+        return killed;
+    }
+
+    public void setKilled(boolean killed) {
+        this.killed = killed;
     }
 
     public void setTextureNum(int num) {
@@ -214,7 +224,7 @@ public class EntitySoMZombie extends EntityZombie {
 
     @Override
     public void onDeath(DamageSource cause) {
-        MobTracker.removeMob(this.player, this);
+        setKilled(true);
         super.onDeath(cause);
     }
 
@@ -266,9 +276,31 @@ public class EntitySoMZombie extends EntityZombie {
         //this.getEntityAttribute(SharedMonsterAttributes.SECOND_LIFE).applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextDouble() * 0.05000000074505806D, 0));
     }
 
+    /**
+     * attempts a reroll of mob stats with no improvement guaranteed
+     *
+     * @param level
+     */
     public void reRoll(int level) {
+        reRoll(level, 0);
+    }
 
-        tryLevelUp(level);
+    /**
+     * rerolls mob stats with a minimum level increase ensured
+     *
+     * @param level
+     * @param minimumLevelIncrease
+     */
+    public void reRoll(int level, int minimumLevelIncrease) {
+        int oldLevel;
+        int loopBug = 0;
+        do {
+            oldLevel = getLevel();
+            tryLevelUp(level);
+            ++loopBug;
+            if (loopBug > 200)
+                ShadowOfMobdor.logger.debug("Reroll loop stuck, mob level: " + getLevel() + ", level in: " + level + ", minimum increase: " + minimumLevelIncrease);
+        } while (getLevel() - oldLevel < minimumLevelIncrease && loopBug < 200);
 
         Tier temp = StatGeneration.rollTier(this.level);
         if (temp.isGreaterTier(this.tier)) {
@@ -279,6 +311,7 @@ public class EntitySoMZombie extends EntityZombie {
             applyModifiers();
             setTexture(this.tier);
         }
+
     }
 
     public void tryLevelUp(int level) {
@@ -329,6 +362,7 @@ public class EntitySoMZombie extends EntityZombie {
         compound.setString("som_class", mobClass.name());
         compound.setTag("weaknesses", writeEnumListToNBT(mobWk));
         compound.setTag("inv", writeEnumListToNBT(mobInv));
+        compound.setBoolean("killed", this.killed);
     }
 
     private <T extends Enum> NBTTagList writeEnumListToNBT(ArrayList<T> listIn) {
@@ -364,6 +398,7 @@ public class EntitySoMZombie extends EntityZombie {
         this.mobClass = SoMClass.valueOf(compound.getString("som_class"));
         this.mobWk = readEnumListFromNBT(Weaknesses.class, compound.getTagList("weaknesses", 10));
         this.mobInv = readEnumListFromNBT(Invulnerabilities.class, compound.getTagList("inv", 10));
+        this.killed = compound.getBoolean("killed");
 
         applyModifiers();
         this.setHealth(this.getMaxHealth());

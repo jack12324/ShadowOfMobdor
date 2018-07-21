@@ -15,7 +15,7 @@ public class mobButton extends GuiButton {
     int mobTier;
 
     public mobButton(EntitySoMZombie mob, int buttonId, int x, int y) {
-        super(buttonId, x, y, 22, 22, mob.getName());
+        super(buttonId, x, y, 22, 22, mob.getName() + (mob.isKilled() ? " (Dead)" : ""));
         this.mob = mob;
         this.mobTier = mob.getTier().tierNum();
     }
@@ -35,6 +35,8 @@ public class mobButton extends GuiButton {
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             this.drawTexturedModalRect(this.x, this.y, mobTier * 22, i * 22, this.width, this.height);
+            if (mob.isKilled())
+                this.drawTexturedModalRect(this.x, this.y, (i * 22) - 22, 0, this.width, this.height);
             this.mouseDragged(mc, mouseX, mouseY);
         }
     }
