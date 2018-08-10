@@ -1,6 +1,7 @@
 package com.jack12324.som.entity;
 
 import com.jack12324.som.ShadowOfMobdor;
+import com.jack12324.som.SoMConst;
 import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.gen.*;
 import net.minecraft.entity.IEntityLivingData;
@@ -47,6 +48,24 @@ public class EntitySoMZombie extends EntityZombie {
         mobWk = StatGeneration.rollWeaknesses(this.tier.weaknessRolls(), this.mobWk);
         mobInv = StatGeneration.rollInvulnerabilities(this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
         this.name = StatGeneration.generateName(mobInv);
+        this.killed = false;
+        setCustomNameTag(name);
+        this.setSize(this.width * 1.25f, this.height * 1.25f);
+        setTexture(this.tier);
+
+        applyModifiers();
+        this.setHealth(this.getMaxHealth());
+    }
+
+    public EntitySoMZombie(EntitySoMZombie mobToCopy) {
+        super(mobToCopy.getEntityWorld());
+        this.player = mobToCopy.player;
+        this.level = mobToCopy.getLevel();
+        this.tier = mobToCopy.getTier();
+        this.mobClass = mobToCopy.getMobClass();
+        mobWk = mobToCopy.getMobWk();
+        mobInv = mobToCopy.getMobInv();
+        this.name = mobToCopy.getName();
         this.killed = false;
         setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
@@ -229,31 +248,25 @@ public class EntitySoMZombie extends EntityZombie {
     }
 
     private void applyModifiers() {
+
         removeModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Health level add", 10 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Follow range level add", level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).applyModifier(new AttributeModifier("Knockback resistance level add", .5 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Movement Speed level add", .01 * level,
-                        0));
-        //this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).applyModifier(new AttributeModifier("flying speed level add", .01 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Attack damage level add", .5 * level,
-                        0));
-        //this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).applyModifier(new AttributeModifier("Attack Speed level add", .2 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier("Armor level add", .1 * level, 0));
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).applyModifier(new AttributeModifier("Armor toughness level add", .1 * level, 0));
+
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier(SoMConst.HP_ADD, "Health level add", 10 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier(SoMConst.FLLW_RNG_ADD, "Follow range level add", level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).applyModifier(new AttributeModifier(SoMConst.KNCKBCK_RES_ADD, "Knockback resistance level add", .5 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(SoMConst.MVMT_SPD_ADD, "Movement Speed level add", .01 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier(SoMConst.ATK_ADD, "Attack damage level add", .5 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier(SoMConst.ARMR_ADD, "Armor level add", .1 * level, 0));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).applyModifier(new AttributeModifier(SoMConst.ARMR_TGH_ADD, "Armor toughness level add", .1 * level, 0));
 
 
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Health mult", this.mobClass.healthMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Follow range mult", this.mobClass.followRangeMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).applyModifier(new AttributeModifier("Knockback resistance mult", this.mobClass.knockbackResistanceMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Movement Speed mult", this.mobClass.mvtSpeedMult() * this.tier.tierMultiplier(),
-                        1));
-        //this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).applyModifier(new AttributeModifier("flying speed mult", this.mobClass.flySpeedMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Attack damage mult", this.mobClass.attackMult() * this.tier.tierMultiplier(),
-                        1));
-        // this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).applyModifier(new AttributeModifier("Attack Speed mult", this.mobClass.atkSpeedMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier("Armor mult", this.mobClass.armorMult() * this.tier.tierMultiplier(), 1));
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).applyModifier(new AttributeModifier("Armor toughness mult", this.mobClass.armorToughnessMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier(SoMConst.HP_MULT, "Health mult", this.mobClass.healthMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier(SoMConst.FLLW_RNG_MULT, "Follow range mult", this.mobClass.followRangeMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).applyModifier(new AttributeModifier(SoMConst.KNCKBCK_RES_MULT, "Knockback resistance mult", this.mobClass.knockbackResistanceMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(SoMConst.MVMT_SPD_MULT, "Movement Speed mult", this.mobClass.mvtSpeedMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier(SoMConst.ATK_MULT, "Attack damage mult", this.mobClass.attackMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier(SoMConst.ARMR_MULT, "Armor mult", this.mobClass.armorMult() * this.tier.tierMultiplier(), 1));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).applyModifier(new AttributeModifier(SoMConst.ARMR_TGH_MULT, "Armor toughness mult", this.mobClass.armorToughnessMult() * this.tier.tierMultiplier(), 1));
 
         //todo new attributes
         //this.getEntityAttribute(SharedMonsterAttributes.HEAL).applyModifier
@@ -261,15 +274,21 @@ public class EntitySoMZombie extends EntityZombie {
     }
 
     private void removeModifiers() {
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeAllModifiers();
-        //this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeAllModifiers();
-        // this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).removeAllModifiers();
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).removeAllModifiers();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).removeModifier(SoMConst.HP_ADD);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(SoMConst.FLLW_RNG_ADD);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).removeModifier(SoMConst.KNCKBCK_RES_ADD);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(SoMConst.MVMT_SPD_ADD);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(SoMConst.ATK_ADD);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(SoMConst.ARMR_ADD);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).removeModifier(SoMConst.ARMR_TGH_ADD);
+
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).removeModifier(SoMConst.HP_MULT);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(SoMConst.FLLW_RNG_MULT);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).removeModifier(SoMConst.KNCKBCK_RES_MULT);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(SoMConst.MVMT_SPD_MULT);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(SoMConst.ATK_MULT);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(SoMConst.ARMR_MULT);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).removeModifier(SoMConst.ARMR_TGH_MULT);
 
         //todo new attributes
         //this.getEntityAttribute(SharedMonsterAttributes.HEAL).applyModifier
@@ -292,10 +311,9 @@ public class EntitySoMZombie extends EntityZombie {
      * @param minimumLevelIncrease
      */
     public void reRoll(int level, int minimumLevelIncrease) {
-        int oldLevel;
+        int oldLevel = getLevel();
         int loopBug = 0;
         do {
-            oldLevel = getLevel();
             tryLevelUp(level);
             ++loopBug;
             if (loopBug > 200)

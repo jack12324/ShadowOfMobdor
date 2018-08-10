@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -41,5 +42,28 @@ public class CapabilityHandler {
             event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "nemesis"), new NemesisProvider(NEM, NEMS));
         }
     }
+
+    /**
+     * copies capabilities on player death or return from end
+     *
+     * @param event
+     */
+    @SubscribeEvent
+    public static void playerClone(final PlayerEvent.Clone event) {
+        final IExperience oldXP = event.getOriginal().getCapability(XP, null);
+        final IExperience newXP = event.getEntityPlayer().getCapability(XP, null);
+        final INemesisList oldNem = event.getOriginal().getCapability(NEM, null);
+        final INemesisList newNem = event.getEntityPlayer().getCapability(NEM, null);
+
+        if (newXP != null && oldXP != null) {
+            newXP.setExperience(oldXP.getExperience());
+            newXP.setLevel(oldXP.getLevel());
+        }
+
+        if (newNem != null && oldNem != null)
+            newNem.copyList(oldNem.getMobs());
+    }
+
+
 }
 

@@ -25,5 +25,7 @@ public interface INemesisList {//todo make entitySoMZombie generic
     boolean isEmpty();
 
     EntityPlayer getPlayer();
+
+    void copyList(EntitySoMZombie[] listToCopy);
 }
 

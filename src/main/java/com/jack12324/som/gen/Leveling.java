@@ -22,10 +22,12 @@ public class Leveling {
      */
     @SubscribeEvent
     public static void craftXP(PlayerEvent.ItemCraftedEvent event) {
-        IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
-        capability.addExperience( 1);
-        if (checkLevelUp(capability))
-            levelUp(capability);
+        if (!event.player.getEntityWorld().isRemote) {
+            IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
+            capability.addExperience(1);
+            if (checkLevelUp(capability))
+                levelUp(capability);
+        }
     }
 
     /**
@@ -34,10 +36,12 @@ public class Leveling {
      */
     @SubscribeEvent
     public static void SmeltXP(PlayerEvent.ItemSmeltedEvent event) {
-        IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
-        capability.addExperience(1);
-        if (checkLevelUp(capability))
-            levelUp(capability);
+        if (!event.player.getEntityWorld().isRemote) {
+            IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
+            capability.addExperience(1);
+            if (checkLevelUp(capability))
+                levelUp(capability);
+        }
     }
 
     /**
@@ -46,12 +50,15 @@ public class Leveling {
      */
     @SubscribeEvent
     public static void killXP(LivingDeathEvent event) {
-        if (event.getSource().getTrueSource() instanceof EntityPlayer) {
-            IExperience cap = event.getSource().getTrueSource().getCapability(CapabilityHandler.XP,null);
-            int xpAmount = (int) (event.getEntityLiving().getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
-            cap.addExperience(xpAmount);
-            if (checkLevelUp(cap))
-                levelUp(cap);
+
+        if (!event.getEntity().getEntityWorld().isRemote) {
+            if (event.getSource().getTrueSource() instanceof EntityPlayer) {
+                IExperience cap = event.getSource().getTrueSource().getCapability(CapabilityHandler.XP, null);
+                int xpAmount = (int) (event.getEntityLiving().getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
+                cap.addExperience(xpAmount);
+                if (checkLevelUp(cap))
+                    levelUp(cap);
+            }
         }
     }
 

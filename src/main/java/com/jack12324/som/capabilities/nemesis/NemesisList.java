@@ -51,6 +51,13 @@ public class NemesisList implements INemesisList {
     }
 
     @Override
+    public void copyList(EntitySoMZombie[] listToCopy) {
+        clearMobs();
+        for (int i = 0; i < listToCopy.length; i++)
+            this.mobs[i] = listToCopy[i];
+    }
+
+    @Override
     public EntitySoMZombie[] getMobs() {
         return mobs;
     }

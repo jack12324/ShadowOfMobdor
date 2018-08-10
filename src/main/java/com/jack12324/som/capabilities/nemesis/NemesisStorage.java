@@ -24,10 +24,12 @@ public class NemesisStorage implements Capability.IStorage<INemesisList> {
 
     @Override
     public void readNBT(Capability<INemesisList> capability, INemesisList instance, EnumFacing side, NBTBase nbt) {
-        instance.clearMobs();
-        for (int i = 0; i < instance.getMobs().length; i++) {
-            instance.addMob((EntitySoMZombie) EntityList.createEntityFromNBT(((NBTTagCompound) nbt).getCompoundTag(i + ""), instance.getWorld()), i);
-            instance.getMob(i).setPlayer(instance.getPlayer());
+        if (!nbt.hasNoTags()) {
+            instance.clearMobs();
+            for (int i = 0; i < instance.getMobs().length; i++) {
+                instance.addMob((EntitySoMZombie) EntityList.createEntityFromNBT(((NBTTagCompound) nbt).getCompoundTag(i + ""), instance.getWorld()), i);
+                instance.getMob(i).setPlayer(instance.getPlayer());
+            }
         }
     }
 }

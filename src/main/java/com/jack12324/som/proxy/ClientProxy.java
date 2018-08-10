@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -38,6 +39,14 @@ public class ClientProxy implements CommonProxy {
     @Override public void registerItemRenderer(Item item, int meta, String id) {
         ModelLoader.setCustomModelResourceLocation(item, meta,
                         new ModelResourceLocation(ShadowOfMobdor.MODID + ":" + id, "inventory"));
+    }
+
+    @Override
+    public EntityPlayer getPlayerFromContext(MessageContext ctx) {
+        if (ctx.side.isClient())
+            return Minecraft.getMinecraft().player;
+        else
+            return ctx.getServerHandler().player;
     }
 
     public void openGUI(int id, EntityPlayer player, EntitySoMZombie mob) {

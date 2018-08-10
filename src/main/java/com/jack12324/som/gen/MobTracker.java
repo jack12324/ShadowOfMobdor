@@ -53,9 +53,8 @@ public class MobTracker {
                         Random rand = new Random();
 
                         if (rand.nextInt(100) < 50) { //todo make something better than random chance
-                            target.setKilled(false);
-                            target.setHealth(target.getMaxHealth());
-                            target.reRoll(playerXP.getLevel(), 2);
+                            mobs.addMob(new EntitySoMZombie(target), i);
+                            mobs.getMob(i).reRoll(playerXP.getLevel(), 2);
                         } else
                             mobs.addMob(new EntitySoMZombie(player), i);
                     } else
