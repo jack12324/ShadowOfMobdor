@@ -7,6 +7,7 @@ import com.jack12324.som.capabilities.experience.IExperience;
 import com.jack12324.som.capabilities.nemesis.INemesisList;
 import com.jack12324.som.capabilities.nemesis.NemesisList;
 import com.jack12324.som.capabilities.nemesis.NemesisStorage;
+import com.jack12324.som.network.SoMPacketHandler;
 import com.jack12324.som.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -41,8 +42,9 @@ public class ShadowOfMobdor {
         logger = event.getModLog();
         CapabilityManager.INSTANCE.register(IExperience.class, new ExperienceStorage(), () -> new Experience(null));
         CapabilityManager.INSTANCE.register(INemesisList.class, new NemesisStorage(), () -> new NemesisList(null));
+        SoMPacketHandler.registerMessages();
         proxy.preInit(event);
-        logger.info("XXXpreinitXXX");
+        logger.info(MODNAME + " version: " + MODVERSION + " PreInit done");
 
 
     }
@@ -51,13 +53,13 @@ public class ShadowOfMobdor {
     public void init(FMLInitializationEvent e) {
         proxy.init(e);
 
-        logger.info("XXXinitXXX");
+        logger.info(MODNAME + " version: " + MODVERSION + " Init done");
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         proxy.postInit(e);
-        logger.info("XXXpostinitXXX");
+        logger.info(MODNAME + " version: " + MODVERSION + " PostInit done");
     }
 
     @Mod.EventBusSubscriber public static class RegistrationHandler {

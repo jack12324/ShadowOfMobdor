@@ -7,8 +7,12 @@ import com.jack12324.som.capabilities.experience.IExperience;
 import com.jack12324.som.capabilities.nemesis.INemesisList;
 import com.jack12324.som.capabilities.nemesis.NemesisList;
 import com.jack12324.som.capabilities.nemesis.NemesisProvider;
+import com.jack12324.som.network.SoMPacketHandler;
+import com.jack12324.som.network.nemesis.NemListPacket;
+import com.jack12324.som.network.xp.XPPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -31,6 +35,7 @@ public class CapabilityHandler {
 
     @SubscribeEvent
     public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
+        ShadowOfMobdor.logger.debug("AttachCapabilitiesEvent");
         if (!(event.getObject() instanceof EntityPlayer))
             return;
         else {
@@ -40,6 +45,7 @@ public class CapabilityHandler {
 
             final NemesisList NEMS = new NemesisList((EntityPlayer) event.getObject());
             event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "nemesis"), new NemesisProvider(NEM, NEMS));
+
         }
     }
 
@@ -62,8 +68,12 @@ public class CapabilityHandler {
 
         if (newNem != null && oldNem != null)
             newNem.copyList(oldNem.getMobs());
+
+        if (!event.getEntityPlayer().getEntityWorld().isRemote) {
+            SoMPacketHandler.NETWORK.sendTo(new NemListPacket(event.getEntityPlayer().getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) event.getEntityPlayer());
+            IExperience capability = event.getEntityPlayer().getCapability(CapabilityHandler.XP, null);
+            SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.getEntityPlayer());
+        }
     }
-
-
 }
 

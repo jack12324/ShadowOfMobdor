@@ -1,5 +1,7 @@
 package com.jack12324.som.capabilities.experience;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 public interface IExperience {
 
     void addExperience(int amount);
@@ -13,5 +15,7 @@ public interface IExperience {
     int getLevel();
 
     int getExperience();
+
+    EntityPlayer getPlayer();
 }
 

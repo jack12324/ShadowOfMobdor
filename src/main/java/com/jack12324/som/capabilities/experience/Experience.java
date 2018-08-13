@@ -39,6 +39,10 @@ public class Experience implements IExperience {
         return level;
     }
 
+    public EntityPlayer getPlayer() {
+        return this.player;
+    }
+
     @Override
     public int getExperience() {
         return experience;

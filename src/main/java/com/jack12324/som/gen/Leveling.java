@@ -4,8 +4,11 @@ package com.jack12324.som.gen;
 import com.jack12324.som.SoMConst;
 import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.capabilities.experience.IExperience;
+import com.jack12324.som.network.SoMPacketHandler;
+import com.jack12324.som.network.xp.XPPacket;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -22,12 +25,7 @@ public class Leveling {
      */
     @SubscribeEvent
     public static void craftXP(PlayerEvent.ItemCraftedEvent event) {
-        if (!event.player.getEntityWorld().isRemote) {
-            IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
-            capability.addExperience(1);
-            if (checkLevelUp(capability))
-                levelUp(capability);
-        }
+        incrementXP(event);
     }
 
     /**
@@ -36,11 +34,16 @@ public class Leveling {
      */
     @SubscribeEvent
     public static void SmeltXP(PlayerEvent.ItemSmeltedEvent event) {
+        incrementXP(event);
+    }
+
+    private static void incrementXP(PlayerEvent event) {
         if (!event.player.getEntityWorld().isRemote) {
             IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
             capability.addExperience(1);
             if (checkLevelUp(capability))
                 levelUp(capability);
+            SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.player);
         }
     }
 
@@ -58,7 +61,10 @@ public class Leveling {
                 cap.addExperience(xpAmount);
                 if (checkLevelUp(cap))
                     levelUp(cap);
+                SoMPacketHandler.NETWORK.sendTo(new XPPacket(cap.getExperience(), cap.getLevel()), (EntityPlayerMP) event.getSource().getTrueSource());
+
             }
+
         }
     }
 

@@ -4,7 +4,11 @@ import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.capabilities.experience.IExperience;
 import com.jack12324.som.capabilities.nemesis.INemesisList;
 import com.jack12324.som.entity.EntitySoMZombie;
+import com.jack12324.som.network.SoMPacketHandler;
+import com.jack12324.som.network.nemesis.NemListPacket;
+import com.jack12324.som.network.xp.XPPacket;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +29,10 @@ public class MobTracker {
                 for (int i = 0; i < 10; i++)
                     event.player.getCapability(CapabilityHandler.NEM, null).addMob(new EntitySoMZombie(event.player), i);
             }
+            SoMPacketHandler.NETWORK.sendTo(new NemListPacket(event.player.getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) event.player);
+            IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
+            SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.player);
+
         }
     }
 
@@ -62,8 +70,12 @@ public class MobTracker {
                 }
                 if (event.getSource().getTrueSource() instanceof EntitySoMZombie)
                     mobKilledPlayer((EntitySoMZombie) event.getSource().getTrueSource(), playerXP.getLevel());
+                SoMPacketHandler.NETWORK.sendTo(new NemListPacket(mobs.getMobs()), (EntityPlayerMP) player);
+
             }
+
         }
+
     }
 
 
@@ -83,5 +95,8 @@ public class MobTracker {
     public static void removeMob(EntityPlayer player, EntitySoMZombie mob) {
         Random rand = new Random(); //todo add event to survive and level up
         player.getCapability(CapabilityHandler.NEM, null).removeMob(mob);
+        if (!player.getEntityWorld().isRemote)
+            SoMPacketHandler.NETWORK.sendTo(new NemListPacket(player.getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) player);
+
     }
 }
