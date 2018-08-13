@@ -1,7 +1,6 @@
 package com.jack12324.som.proxy;
 
 import com.jack12324.som.ShadowOfMobdor;
-import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.entity.ModEntities;
 import com.jack12324.som.gui.GuiDESC;
 import com.jack12324.som.gui.GuiGUI;
@@ -49,13 +48,14 @@ public class ClientProxy implements CommonProxy {
             return ctx.getServerHandler().player;
     }
 
-    public void openGUI(int id, EntityPlayer player, EntitySoMZombie mob) {
+    @Override
+    public void openGUI(int id, EntityPlayer player, int mobIndex) {
         switch (id) {//todo constant value for IDS for easier reading
             case 0:
                 Minecraft.getMinecraft().displayGuiScreen(new GuiGUI(player));
                 break;
             case 1:
-                Minecraft.getMinecraft().displayGuiScreen(new GuiDESC(mob, player));
+                Minecraft.getMinecraft().displayGuiScreen(new GuiDESC(mobIndex, player));
                 break;
         }
     }

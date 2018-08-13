@@ -1,13 +1,15 @@
 package com.jack12324.som.gui;
 
 import com.jack12324.som.ShadowOfMobdor;
+import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.gen.Invulnerabilities;
 import com.jack12324.som.gen.Weaknesses;
+import com.jack12324.som.network.SoMPacketHandler;
+import com.jack12324.som.network.guispawn.GUISpawnPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +23,7 @@ import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen
 public class GuiDESC extends GuiScreen {
     EntitySoMZombie mob;        //mob from which to display information
     EntityPlayer player;        //player gui opened on, used to return to gui
+    int mobIndex;
     int xSize = 256;            // width of gui
     int ySize = 166;            // height of gui
     float oldMouseX;            //last x position of mouse TODO do i need this
@@ -28,8 +31,9 @@ public class GuiDESC extends GuiScreen {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID,
             "textures/gui/desc.png");
 
-    public GuiDESC(Entity mob, EntityPlayer player) {
-        this.mob = (EntitySoMZombie) mob;
+    public GuiDESC(int mobIndex, EntityPlayer player) {
+        this.mob = player.getCapability(CapabilityHandler.NEM, null).getMob(mobIndex);
+        this.mobIndex = mobIndex;
         this.player = player;
     }
 
@@ -156,11 +160,9 @@ public class GuiDESC extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id == 1)
-            ShadowOfMobdor.proxy.openGUI(0, player, null);
+            ShadowOfMobdor.proxy.openGUI(0, player, -1);
         else if (button.id == 2) {
-            this.mob.setPosition(this.player.getPosition().getX(), this.player.getPosition().getY(), this.player.getPosition().getZ());
-            this.mob.onInitialSpawn(this.player.getEntityWorld().getDifficultyForLocation(this.player.getPosition()), null);
-            this.player.getEntityWorld().spawnEntity(this.mob);
+            SoMPacketHandler.NETWORK.sendToServer(new GUISpawnPacket(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), this.mobIndex));
         } else
             super.actionPerformed(button);
 

@@ -1,7 +1,6 @@
 package com.jack12324.som.proxy;
 
 import com.jack12324.som.ShadowOfMobdor;
-import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.entity.ModEntities;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -37,6 +36,7 @@ public class ServerProxy implements CommonProxy {
         }
     }
 
-    public void openGUI(int id, EntityPlayer player, EntitySoMZombie mob) {
+    @Override
+    public void openGUI(int id, EntityPlayer player, int mobIndex) {
     }
 }

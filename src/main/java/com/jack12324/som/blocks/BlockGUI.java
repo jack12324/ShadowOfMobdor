@@ -24,7 +24,7 @@ public class BlockGUI extends BlockBase {
             ShadowOfMobdor.logger.info("Server XP: " + player.getCapability(CapabilityHandler.XP, null).getExperience());
             return true;
         } else {
-            ShadowOfMobdor.proxy.openGUI(0, player, null);
+            ShadowOfMobdor.proxy.openGUI(0, player, -1);
             ShadowOfMobdor.logger.info("Client Mobs: " + player.getCapability(CapabilityHandler.NEM, null).getMobs());
             ShadowOfMobdor.logger.info("Client Level: " + player.getCapability(CapabilityHandler.XP, null).getLevel());
             ShadowOfMobdor.logger.info("Client XP: " + player.getCapability(CapabilityHandler.XP, null).getExperience());

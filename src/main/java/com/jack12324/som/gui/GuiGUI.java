@@ -111,7 +111,7 @@ public class GuiGUI extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id < mobs.length && button.id >= 0)
-            ShadowOfMobdor.proxy.openGUI(1, player, mobs[button.id]);
+            ShadowOfMobdor.proxy.openGUI(1, player, button.id);
         else
             super.actionPerformed(button);
 
