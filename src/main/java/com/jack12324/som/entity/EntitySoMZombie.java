@@ -4,11 +4,14 @@ import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.SoMConst;
 import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.gen.*;
+import com.jack12324.som.network.SoMPacketHandler;
+import com.jack12324.som.network.nemesis.NemListPacket;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
@@ -245,6 +248,8 @@ public class EntitySoMZombie extends EntityZombie {
     public void onDeath(DamageSource cause) {
         setKilled(true);
         super.onDeath(cause);
+        if (!this.getEntityWorld().isRemote)
+            SoMPacketHandler.NETWORK.sendTo(new NemListPacket(this.player.getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) this.player);
     }
 
     private void applyModifiers() {

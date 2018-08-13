@@ -45,7 +45,8 @@ public class GuiDESC extends GuiScreen {
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-        drawEntityOnScreen(x + 32, y + 83, 30, (float) (x + 26) - this.oldMouseX,
+        if (!mob.isKilled())
+            drawEntityOnScreen(x + 32, y + 83, 30, (float) (x + 26) - this.oldMouseX,
                         (float) (y + 80 - 50) - this.oldMouseY, mob);
 
         String name = mob.getName();
