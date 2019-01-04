@@ -4,6 +4,8 @@ import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.entity.ModEntities;
 import com.jack12324.som.gui.GuiDESC;
 import com.jack12324.som.gui.GuiGUI;
+import com.jack12324.som.gui.GuiStart;
+import com.jack12324.som.gui.GuiWarn;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +17,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+
+import static com.jack12324.som.SoMConst.GUI_START;
+import static com.jack12324.som.SoMConst.GUI_WARN;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy implements CommonProxy {
@@ -56,6 +61,12 @@ public class ClientProxy implements CommonProxy {
                 break;
             case 1:
                 Minecraft.getMinecraft().displayGuiScreen(new GuiDESC(mobIndex, player));
+                break;
+            case GUI_WARN:
+                Minecraft.getMinecraft().displayGuiScreen(new GuiWarn(player));
+                break;
+            case GUI_START:
+                Minecraft.getMinecraft().displayGuiScreen(new GuiStart(player));
                 break;
         }
     }

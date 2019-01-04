@@ -54,7 +54,7 @@ public class EntitySoMZombie extends EntityZombie {
         mobInv = StatGeneration.rollInvulnerabilities(this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
         this.name = StatGeneration.generateName(mobInv);
         this.killed = false;
-        this.spawnLoc = null;//todo
+        this.spawnLoc = SoMConst.generateSpawnLocation(player.getCapability(CapabilityHandler.XP, null).getStartPosition());
         setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
         setTexture(this.tier);

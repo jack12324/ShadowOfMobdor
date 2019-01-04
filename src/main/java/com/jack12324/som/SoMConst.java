@@ -1,5 +1,8 @@
 package com.jack12324.som;
 
+import net.minecraft.util.math.BlockPos;
+
+import java.util.Random;
 import java.util.UUID;
 
 public class SoMConst {
@@ -27,10 +30,39 @@ public class SoMConst {
     public static final UUID ARMR_TGH_ADD = UUID.fromString("acfe9a33-cbc4-4cbc-ae0f-d506d0feecc6");
     public static final UUID ARMR_TGH_MULT = UUID.fromString("fc221fdb-229a-4026-9000-796a89931a13");
 
+    //buttons
+    public static final int B_START_SPAWN = 51256;
+    public static final int B_WARN_CONFIRM = 51257;
+    public static final int B_WARN_BACK = 51258;
+
+    //guis
+    public static final int GUI_WARN = 9842;
+    public static final int GUI_START = 9843;
+
+
 
     static {
         levels[0] = 0;
         for (int i = 1; i < levels.length; i++)
             levels[i] = (int) (100 * Math.pow(1.075, i - 1));
+    }
+
+    /**
+     * creates a spawn point radially outward from a center position
+     *
+     * @param centerPoint center of circle
+     * @return position 500, 1000, or 1500 blocks from the center point
+     */
+    public static BlockPos generateSpawnLocation(BlockPos centerPoint) {
+        Random rand = new Random();
+        int ring = rings[rand.nextInt(3)];
+        int x = rand.nextInt(ring);
+        int z = (int) Math.sqrt(ring * ring - x * x);
+        x = rand.nextInt(1) == 0 ? x * -1 : x;
+        z = rand.nextInt(1) == 0 ? z * -1 : z;
+
+        int y = 200; //todo how to get height?
+
+        return new BlockPos(centerPoint.getX() + x, y, centerPoint.getZ() + z);
     }
 }
