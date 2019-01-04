@@ -1,16 +1,16 @@
-package com.jack12324.som.capabilities.experience;
+package com.jack12324.som.capabilities.player_stats;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ExperienceProvider implements ICapabilitySerializable<NBTBase> {
-    protected final Capability<IExperience> SOMXP;
-    protected final IExperience instance;
+public class PlayerStatsProvider implements ICapabilitySerializable<NBTBase> {
+    protected final Capability<IPlayerStats> SOMPD;
+    protected final IPlayerStats instance;
 
-    public ExperienceProvider(Capability<IExperience> capability, IExperience instance) {
-        this.SOMXP = capability;
+    public PlayerStatsProvider(Capability<IPlayerStats> capability, IPlayerStats instance) {
+        this.SOMPD = capability;
         this.instance = instance;
     }
 
@@ -35,11 +35,11 @@ public class ExperienceProvider implements ICapabilitySerializable<NBTBase> {
     }
 
 
-    public Capability<IExperience> getCapability() {
-        return SOMXP;
+    public Capability<IPlayerStats> getCapability() {
+        return SOMPD;
     }
 
-    public IExperience getInstance() {
+    public IPlayerStats getInstance() {
         return instance;
     }
 }

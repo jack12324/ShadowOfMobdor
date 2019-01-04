@@ -4,7 +4,7 @@ import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.SoMConst;
 import com.jack12324.som.blocks.SoMBlocks;
 import com.jack12324.som.capabilities.CapabilityHandler;
-import com.jack12324.som.capabilities.experience.IExperience;
+import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.entity.EntitySoMZombie;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -25,7 +25,7 @@ public class GuiGUI extends GuiScreen {
     int ySize = 166;
     EntityPlayer player;
     EntitySoMZombie[] mobs;
-    IExperience xpCapability;
+    IPlayerStats xpCapability;
 
     public GuiGUI(EntityPlayer player) {
         super();

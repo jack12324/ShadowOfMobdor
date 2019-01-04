@@ -1,12 +1,12 @@
 package com.jack12324.som.capabilities;
 
 import com.jack12324.som.ShadowOfMobdor;
-import com.jack12324.som.capabilities.experience.Experience;
-import com.jack12324.som.capabilities.experience.ExperienceProvider;
-import com.jack12324.som.capabilities.experience.IExperience;
 import com.jack12324.som.capabilities.nemesis.INemesisList;
 import com.jack12324.som.capabilities.nemesis.NemesisList;
 import com.jack12324.som.capabilities.nemesis.NemesisProvider;
+import com.jack12324.som.capabilities.player_stats.IPlayerStats;
+import com.jack12324.som.capabilities.player_stats.PlayerStats;
+import com.jack12324.som.capabilities.player_stats.PlayerStatsProvider;
 import com.jack12324.som.network.SoMPacketHandler;
 import com.jack12324.som.network.nemesis.NemListPacket;
 import com.jack12324.som.network.xp.XPPacket;
@@ -30,8 +30,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CapabilityHandler {
     @CapabilityInject(INemesisList.class)
     public static final Capability<INemesisList> NEM = null;
-    @CapabilityInject(IExperience.class)
-    public static final Capability<IExperience> XP = null;
+    @CapabilityInject(IPlayerStats.class)
+    public static final Capability<IPlayerStats> XP = null;
 
     @SubscribeEvent
     public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
@@ -40,8 +40,8 @@ public class CapabilityHandler {
             return;
         else {
 
-            final Experience SOMXP = new Experience((EntityPlayer) event.getObject());
-            event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "experience"), new ExperienceProvider(XP, SOMXP));
+            final PlayerStats SOMXP = new PlayerStats((EntityPlayer) event.getObject());
+            event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "experience"), new PlayerStatsProvider(XP, SOMXP));
 
             final NemesisList NEMS = new NemesisList((EntityPlayer) event.getObject());
             event.addCapability(new ResourceLocation(ShadowOfMobdor.MODID, "nemesis"), new NemesisProvider(NEM, NEMS));
@@ -56,8 +56,8 @@ public class CapabilityHandler {
      */
     @SubscribeEvent
     public static void playerClone(final PlayerEvent.Clone event) {
-        final IExperience oldXP = event.getOriginal().getCapability(XP, null);
-        final IExperience newXP = event.getEntityPlayer().getCapability(XP, null);
+        final IPlayerStats oldXP = event.getOriginal().getCapability(XP, null);
+        final IPlayerStats newXP = event.getEntityPlayer().getCapability(XP, null);
         final INemesisList oldNem = event.getOriginal().getCapability(NEM, null);
         final INemesisList newNem = event.getEntityPlayer().getCapability(NEM, null);
 
@@ -71,7 +71,7 @@ public class CapabilityHandler {
 
         if (!event.getEntityPlayer().getEntityWorld().isRemote) {
             SoMPacketHandler.NETWORK.sendTo(new NemListPacket(event.getEntityPlayer().getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) event.getEntityPlayer());
-            IExperience capability = event.getEntityPlayer().getCapability(CapabilityHandler.XP, null);
+            IPlayerStats capability = event.getEntityPlayer().getCapability(CapabilityHandler.XP, null);
             SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.getEntityPlayer());
         }
     }

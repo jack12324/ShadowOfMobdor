@@ -1,8 +1,9 @@
-package com.jack12324.som.capabilities.experience;
+package com.jack12324.som.capabilities.player_stats;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 
-public interface IExperience {
+public interface IPlayerStats {
 
     void addExperience(int amount);
 
@@ -13,6 +14,10 @@ public interface IExperience {
     void setLevel(int level);
 
     int getLevel();
+
+    BlockPos getStartPosition();
+
+    void setStartPosition(BlockPos position);
 
     int getExperience();
 

@@ -1,8 +1,8 @@
 package com.jack12324.som.gen;
 
 import com.jack12324.som.capabilities.CapabilityHandler;
-import com.jack12324.som.capabilities.experience.IExperience;
 import com.jack12324.som.capabilities.nemesis.INemesisList;
+import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.network.SoMPacketHandler;
 import com.jack12324.som.network.nemesis.NemListPacket;
@@ -30,7 +30,7 @@ public class MobTracker {
                     event.player.getCapability(CapabilityHandler.NEM, null).addMob(new EntitySoMZombie(event.player), i);
             }
             SoMPacketHandler.NETWORK.sendTo(new NemListPacket(event.player.getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) event.player);
-            IExperience capability = event.player.getCapability(CapabilityHandler.XP, null);
+            IPlayerStats capability = event.player.getCapability(CapabilityHandler.XP, null);
             SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.player);
 
         }
@@ -45,7 +45,7 @@ public class MobTracker {
             if (event.getEntity() instanceof EntityPlayer) {
 
                 EntityPlayer player = (EntityPlayer) event.getEntity();
-                IExperience playerXP = player.getCapability(CapabilityHandler.XP, null);
+                IPlayerStats playerXP = player.getCapability(CapabilityHandler.XP, null);
                 INemesisList mobs = player.getCapability(CapabilityHandler.NEM, null);
 
                 //iterate over every mob tied to player

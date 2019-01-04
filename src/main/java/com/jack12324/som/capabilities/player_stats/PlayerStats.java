@@ -1,17 +1,20 @@
-package com.jack12324.som.capabilities.experience;
+package com.jack12324.som.capabilities.player_stats;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 
-public class Experience implements IExperience {
+public class PlayerStats implements IPlayerStats {
 
     private EntityPlayer player;
     private int experience;
     private int level;
+    private BlockPos startPosition;
 
-    public Experience(EntityPlayer player) {
+    public PlayerStats(EntityPlayer player) {
         this.player = player;
         experience = 0;
         this.level = 1;
+        this.startPosition = new BlockPos(player.getEntityWorld().getSpawnPoint());
     }
 
     @Override
@@ -37,6 +40,16 @@ public class Experience implements IExperience {
     @Override
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public BlockPos getStartPosition() {
+        return startPosition;
+    }
+
+    @Override
+    public void setStartPosition(BlockPos position) {
+        this.startPosition = position;
     }
 
     public EntityPlayer getPlayer() {
