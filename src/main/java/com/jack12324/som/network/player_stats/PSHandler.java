@@ -1,4 +1,4 @@
-package com.jack12324.som.network.xp;
+package com.jack12324.som.network.player_stats;
 
 import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.capabilities.CapabilityHandler;
@@ -7,9 +7,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class XPHandler implements IMessageHandler<XPPacket, IMessage> {
+public class PSHandler implements IMessageHandler<PSPacket, IMessage> {
     @Override
-    public IMessage onMessage(XPPacket message, MessageContext ctx) {
+    public IMessage onMessage(PSPacket message, MessageContext ctx) {
         EntityPlayer player = ShadowOfMobdor.proxy.getPlayerFromContext(ctx);
         player.getCapability(CapabilityHandler.XP, null).setLevel(message.level);
         player.getCapability(CapabilityHandler.XP, null).setExperience(message.xp);

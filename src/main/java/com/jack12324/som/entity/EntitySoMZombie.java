@@ -23,6 +23,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -38,6 +39,7 @@ public class EntitySoMZombie extends EntityZombie {
     private ArrayList<Weaknesses> mobWk = new ArrayList<>();
     private ArrayList<Invulnerabilities> mobInv = new ArrayList<>();
     private String name;
+    private BlockPos spawnLoc;
 
     public static final ResourceLocation LOOT = new ResourceLocation(ShadowOfMobdor.MODID, "entities/zombie");
     public static final DataParameter<Integer> TEXTURE_NUM = EntityDataManager.createKey(EntitySoMZombie.class, DataSerializers.VARINT);
@@ -52,6 +54,7 @@ public class EntitySoMZombie extends EntityZombie {
         mobInv = StatGeneration.rollInvulnerabilities(this.tier.invulnerableRolls(), this.mobWk, this.mobInv);
         this.name = StatGeneration.generateName(mobInv);
         this.killed = false;
+        this.spawnLoc = null;//todo
         setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
         setTexture(this.tier);
@@ -70,6 +73,7 @@ public class EntitySoMZombie extends EntityZombie {
         mobInv = mobToCopy.getMobInv();
         this.name = mobToCopy.getName();
         this.killed = false;
+        this.spawnLoc = mobToCopy.getSpawnLoc();
         setCustomNameTag(name);
         this.setSize(this.width * 1.25f, this.height * 1.25f);
         setTexture(this.tier);
@@ -157,6 +161,10 @@ public class EntitySoMZombie extends EntityZombie {
 
     public void setTextureNum(int num) {
         this.dataManager.set(TEXTURE_NUM, num);
+    }
+
+    public BlockPos getSpawnLoc() {
+        return this.spawnLoc;
     }
 
     @Override
@@ -386,6 +394,9 @@ public class EntitySoMZombie extends EntityZombie {
         compound.setTag("weaknesses", writeEnumListToNBT(mobWk));
         compound.setTag("inv", writeEnumListToNBT(mobInv));
         compound.setBoolean("killed", this.killed);
+        compound.setInteger("x", spawnLoc.getX());
+        compound.setInteger("y", spawnLoc.getY());
+        compound.setInteger("z", spawnLoc.getZ());
     }
 
     private <T extends Enum> NBTTagList writeEnumListToNBT(ArrayList<T> listIn) {
@@ -422,6 +433,7 @@ public class EntitySoMZombie extends EntityZombie {
         this.mobWk = readEnumListFromNBT(Weaknesses.class, compound.getTagList("weaknesses", 10));
         this.mobInv = readEnumListFromNBT(Invulnerabilities.class, compound.getTagList("inv", 10));
         this.killed = compound.getBoolean("killed");
+        this.spawnLoc = new BlockPos(compound.getInteger("x"), compound.getInteger("y"), compound.getInteger("z"));
 
         applyModifiers();
         this.setHealth(this.getMaxHealth());

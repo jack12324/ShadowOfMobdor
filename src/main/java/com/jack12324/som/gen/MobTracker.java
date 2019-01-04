@@ -6,7 +6,7 @@ import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.network.SoMPacketHandler;
 import com.jack12324.som.network.nemesis.NemListPacket;
-import com.jack12324.som.network.xp.XPPacket;
+import com.jack12324.som.network.player_stats.PSPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -31,7 +31,7 @@ public class MobTracker {
             }
             SoMPacketHandler.NETWORK.sendTo(new NemListPacket(event.player.getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) event.player);
             IPlayerStats capability = event.player.getCapability(CapabilityHandler.XP, null);
-            SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.player);
+            SoMPacketHandler.NETWORK.sendTo(new PSPacket(capability.getExperience(), capability.getLevel(), capability.getStartPosition()), (EntityPlayerMP) event.player);
 
         }
     }

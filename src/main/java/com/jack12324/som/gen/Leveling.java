@@ -5,7 +5,7 @@ import com.jack12324.som.SoMConst;
 import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.network.SoMPacketHandler;
-import com.jack12324.som.network.xp.XPPacket;
+import com.jack12324.som.network.player_stats.PSPacket;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -43,7 +43,7 @@ public class Leveling {
             capability.addExperience(1);
             if (checkLevelUp(capability))
                 levelUp(capability);
-            SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.player);
+            SoMPacketHandler.NETWORK.sendTo(new PSPacket(capability.getExperience(), capability.getLevel(), capability.getStartPosition()), (EntityPlayerMP) event.player);
         }
     }
 
@@ -61,7 +61,7 @@ public class Leveling {
                 cap.addExperience(xpAmount);
                 if (checkLevelUp(cap))
                     levelUp(cap);
-                SoMPacketHandler.NETWORK.sendTo(new XPPacket(cap.getExperience(), cap.getLevel()), (EntityPlayerMP) event.getSource().getTrueSource());
+                SoMPacketHandler.NETWORK.sendTo(new PSPacket(cap.getExperience(), cap.getLevel(), cap.getStartPosition()), (EntityPlayerMP) event.getSource().getTrueSource());
 
             }
 

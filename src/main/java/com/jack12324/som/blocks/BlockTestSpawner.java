@@ -1,9 +1,10 @@
 package com.jack12324.som.blocks;
 
 import com.jack12324.som.capabilities.CapabilityHandler;
+import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.network.SoMPacketHandler;
-import com.jack12324.som.network.xp.XPPacket;
+import com.jack12324.som.network.player_stats.PSPacket;
 import com.jack12324.som.tiles.TileEntityTestSpawner;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -51,8 +52,9 @@ public class BlockTestSpawner extends BlockTE<TileEntityTestSpawner> {
             } else {
                 TextComponentTranslation component = new TextComponentTranslation("message.som.spawning", tile.getLevel());
                 player.sendStatusMessage(component, false);
-                player.getCapability(CapabilityHandler.XP, null).setLevel(tile.getLevel());
-                SoMPacketHandler.NETWORK.sendTo(new XPPacket(player.getCapability(CapabilityHandler.XP, null).getExperience(), player.getCapability(CapabilityHandler.XP, null).getLevel()), (EntityPlayerMP) player);
+                IPlayerStats cap = player.getCapability(CapabilityHandler.XP, null);
+                cap.setLevel(tile.getLevel());
+                SoMPacketHandler.NETWORK.sendTo(new PSPacket(cap.getExperience(), cap.getLevel(), cap.getStartPosition()), (EntityPlayerMP) player);
                 EntitySoMZombie mob = new EntitySoMZombie(player);
                 mob.setPosition(tile.getPos().getX(), tile.getPos().getY() + 2,
                                 tile.getPos().getZ());

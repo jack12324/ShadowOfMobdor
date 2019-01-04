@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class SoMConst {
     public static final int[] levels = new int[99];
+    public static final int[] rings = new int[]{500, 1000, 1500};
 
     public static final UUID HP_ADD = UUID.fromString("b6922f5a-1705-40cc-ba77-d6264ad5cace");
     public static final UUID HP_MULT = UUID.fromString("79e21e03-7750-4f9e-acc1-2a2221a22634");

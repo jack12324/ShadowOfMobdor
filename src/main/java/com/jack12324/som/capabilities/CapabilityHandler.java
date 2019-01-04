@@ -9,7 +9,7 @@ import com.jack12324.som.capabilities.player_stats.PlayerStats;
 import com.jack12324.som.capabilities.player_stats.PlayerStatsProvider;
 import com.jack12324.som.network.SoMPacketHandler;
 import com.jack12324.som.network.nemesis.NemListPacket;
-import com.jack12324.som.network.xp.XPPacket;
+import com.jack12324.som.network.player_stats.PSPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -72,7 +72,7 @@ public class CapabilityHandler {
         if (!event.getEntityPlayer().getEntityWorld().isRemote) {
             SoMPacketHandler.NETWORK.sendTo(new NemListPacket(event.getEntityPlayer().getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) event.getEntityPlayer());
             IPlayerStats capability = event.getEntityPlayer().getCapability(CapabilityHandler.XP, null);
-            SoMPacketHandler.NETWORK.sendTo(new XPPacket(capability.getExperience(), capability.getLevel()), (EntityPlayerMP) event.getEntityPlayer());
+            SoMPacketHandler.NETWORK.sendTo(new PSPacket(capability.getExperience(), capability.getLevel(), capability.getStartPosition()), (EntityPlayerMP) event.getEntityPlayer());
         }
     }
 }

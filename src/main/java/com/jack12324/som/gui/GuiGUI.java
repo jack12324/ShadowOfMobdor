@@ -6,11 +6,14 @@ import com.jack12324.som.blocks.SoMBlocks;
 import com.jack12324.som.capabilities.CapabilityHandler;
 import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.entity.EntitySoMZombie;
+import com.jack12324.som.network.SoMPacketHandler;
+import com.jack12324.som.network.player_stats.PSPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
@@ -96,6 +99,7 @@ public class GuiGUI extends GuiScreen {
             else
                 butX += 23;
         }
+        buttonList.add(new GuiButton(999, width - xSize - 20, height - ySize, "Set Spawn"));
     }
 
     private int calcButtonWidth() {
@@ -112,7 +116,11 @@ public class GuiGUI extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id < mobs.length && button.id >= 0)
             ShadowOfMobdor.proxy.openGUI(1, player, button.id);
-        else
+        else if (button.id == 999) {
+            IPlayerStats cap = player.getCapability(CapabilityHandler.XP, null);
+            cap.setStartPosition(player.getPosition());
+            SoMPacketHandler.NETWORK.sendTo(new PSPacket(cap.getExperience(), cap.getLevel(), cap.getStartPosition()), (EntityPlayerMP) player);
+        } else
             super.actionPerformed(button);
 
     }
