@@ -48,10 +48,10 @@ public class MobTracker {
                 IExperience playerXP = player.getCapability(CapabilityHandler.XP, null);
                 INemesisList mobs = player.getCapability(CapabilityHandler.NEM, null);
 
-                //iterate over every mod tied to player
+                //iterate over every mob tied to player
                 for (int i = 0; i < mobs.getMobs().length; i++) {
                     EntitySoMZombie target = mobs.getMob(i);
-
+                    //todo track changes for gui update
                     //add mob if they have been removed
                     if (target == null)
                         mobs.addMob(new EntitySoMZombie(player), i);
@@ -61,12 +61,11 @@ public class MobTracker {
                         Random rand = new Random();
 
                         if (rand.nextInt(100) < 50) { //todo make something better than random chance
-                            mobs.addMob(new EntitySoMZombie(target), i);
+                            mobs.addMob(new EntitySoMZombie(target), i);//todo why make new mob?
                             mobs.getMob(i).reRoll(playerXP.getLevel(), 2);
                         } else
                             mobs.addMob(new EntitySoMZombie(player), i);
-                    } else
-                        target.reRoll(playerXP.getLevel()); //todo change this into event instead of automatic re roll
+                    }
                 }
                 if (event.getSource().getTrueSource() instanceof EntitySoMZombie)
                     mobKilledPlayer((EntitySoMZombie) event.getSource().getTrueSource(), playerXP.getLevel());

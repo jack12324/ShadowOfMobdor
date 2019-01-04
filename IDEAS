@@ -1,0 +1,32 @@
+Add a map to track mob locations
+    journey map integration?
+    item to summon?
+    generate locations on bed placement?
+        reset on bed placement?
+    location from gui
+        gui button
+            warning prompt (only update future mobs or first run)
+        store coordinates
+            capability? add to current capability? (XP)
+    arrow (gps) to selected mob
+
+First login gui
+    spawn location
+
+Add loot
+    armor sets
+    weapon sets
+
+Spawning
+    random spawn events?
+        certain classes only
+    option to disable random spawns
+
+Update screen
+    show all new mobs
+    show all upgrades
+    notify update occured
+
+Trophy room?
+    new dimension?
+    
