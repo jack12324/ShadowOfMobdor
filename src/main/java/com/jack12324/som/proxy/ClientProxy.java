@@ -18,8 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-import static com.jack12324.som.SoMConst.GUI_START;
-import static com.jack12324.som.SoMConst.GUI_WARN;
+import static com.jack12324.som.SoMConst.*;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy implements CommonProxy {
@@ -55,11 +54,11 @@ public class ClientProxy implements CommonProxy {
 
     @Override
     public void openGUI(int id, EntityPlayer player, int mobIndex) {
-        switch (id) {//todo constant value for IDS for easier reading
-            case 0:
+        switch (id) {
+            case GUI_MAIN:
                 Minecraft.getMinecraft().displayGuiScreen(new GuiGUI(player));
                 break;
-            case 1:
+            case GUI_DESC:
                 Minecraft.getMinecraft().displayGuiScreen(new GuiDESC(mobIndex, player));
                 break;
             case GUI_WARN:

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jack12324.som.SoMConst.GUI_MAIN;
 import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen;
 
 public class GuiDESC extends GuiScreen {
@@ -161,7 +162,7 @@ public class GuiDESC extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id == 1)
-            ShadowOfMobdor.proxy.openGUI(0, player, -1);
+            ShadowOfMobdor.proxy.openGUI(GUI_MAIN, player, -1);
         else if (button.id == 2) {
             SoMPacketHandler.NETWORK.sendToServer(new GUISpawnPacket(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), this.mobIndex));
         } else

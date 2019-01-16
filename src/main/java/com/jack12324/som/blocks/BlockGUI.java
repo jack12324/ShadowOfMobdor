@@ -11,6 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import static com.jack12324.som.SoMConst.GUI_MAIN;
 import static com.jack12324.som.SoMConst.GUI_START;
 
 public class BlockGUI extends BlockBase {
@@ -32,7 +33,7 @@ public class BlockGUI extends BlockBase {
             if (nemCap.isEmpty())
                 ShadowOfMobdor.proxy.openGUI(GUI_START, player, -1);
             else
-                ShadowOfMobdor.proxy.openGUI(0, player, -1);
+                ShadowOfMobdor.proxy.openGUI(GUI_MAIN, player, -1);
             ShadowOfMobdor.logger.info("Client Mobs: " + player.getCapability(CapabilityHandler.NEM, null).getMobs());
             ShadowOfMobdor.logger.info("Client Level: " + player.getCapability(CapabilityHandler.XP, null).getLevel());
             ShadowOfMobdor.logger.info("Client XP: " + player.getCapability(CapabilityHandler.XP, null).getExperience());

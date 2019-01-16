@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jack12324.som.SoMConst.GUI_DESC;
+
 public class GuiGUI extends GuiScreen {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(ShadowOfMobdor.MODID,
             "textures/gui/gui.png");
@@ -115,7 +117,7 @@ public class GuiGUI extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id < mobs.length && button.id >= 0)
-            ShadowOfMobdor.proxy.openGUI(1, player, button.id);
+            ShadowOfMobdor.proxy.openGUI(GUI_DESC, player, button.id);
         else if (button.id == 999) {
             IPlayerStats cap = player.getCapability(CapabilityHandler.XP, null);
             cap.setStartPosition(player.getPosition());
