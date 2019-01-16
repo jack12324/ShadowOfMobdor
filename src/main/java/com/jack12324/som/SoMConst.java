@@ -38,6 +38,9 @@ public class SoMConst {
     //guis
     public static final int GUI_WARN = 9842;
     public static final int GUI_START = 9843;
+    public static final int GUI_DESC = 9844;
+    public static final int GUI_MAIN = 9845;
+
 
 
 

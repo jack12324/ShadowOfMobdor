@@ -2,6 +2,7 @@ package com.jack12324.som.blocks;
 
 import com.jack12324.som.ShadowOfMobdor;
 import com.jack12324.som.capabilities.CapabilityHandler;
+import com.jack12324.som.capabilities.nemesis.INemesisList;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +10,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import static com.jack12324.som.SoMConst.GUI_START;
 
 public class BlockGUI extends BlockBase {
     public BlockGUI() {
@@ -24,7 +27,12 @@ public class BlockGUI extends BlockBase {
             ShadowOfMobdor.logger.info("Server XP: " + player.getCapability(CapabilityHandler.XP, null).getExperience());
             return true;
         } else {
-            ShadowOfMobdor.proxy.openGUI(0, player, -1);
+            INemesisList nemCap = player.getCapability(CapabilityHandler.NEM, null);
+            //no nemesis list exists yet
+            if (nemCap.isEmpty())
+                ShadowOfMobdor.proxy.openGUI(GUI_START, player, -1);
+            else
+                ShadowOfMobdor.proxy.openGUI(0, player, -1);
             ShadowOfMobdor.logger.info("Client Mobs: " + player.getCapability(CapabilityHandler.NEM, null).getMobs());
             ShadowOfMobdor.logger.info("Client Level: " + player.getCapability(CapabilityHandler.XP, null).getLevel());
             ShadowOfMobdor.logger.info("Client XP: " + player.getCapability(CapabilityHandler.XP, null).getExperience());

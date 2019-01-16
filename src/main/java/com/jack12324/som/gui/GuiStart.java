@@ -48,8 +48,10 @@ public class GuiStart extends GuiScreen {
     public void initGui() {
         buttonList.clear();
         int x = (width - xSize) / 2;
+        int y = (height - ySize) / 2;
 
-        buttonList.add(new GuiButton(B_START_SPAWN, x - 20, height - ySize, "Set Spawn"));
+
+        buttonList.add(new GuiButton(B_START_SPAWN, x - 10, y - 10, "Set Spawn"));
     }
 
     @Override

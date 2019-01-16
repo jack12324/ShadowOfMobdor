@@ -6,35 +6,17 @@ import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.entity.EntitySoMZombie;
 import com.jack12324.som.network.SoMPacketHandler;
 import com.jack12324.som.network.nemesis.NemListPacket;
-import com.jack12324.som.network.player_stats.PSPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import java.util.Random;
 
 @Mod.EventBusSubscriber
 public class MobTracker {
-
-    @SubscribeEvent
-    public static void newPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!event.player.getEntityWorld().isRemote) {
-
-            //if first time player, generate mobs todo place into default cap?
-            if (event.player.getCapability(CapabilityHandler.NEM, null).isEmpty()) {
-                for (int i = 0; i < 10; i++)
-                    event.player.getCapability(CapabilityHandler.NEM, null).addMob(new EntitySoMZombie(event.player), i);
-            }
-            SoMPacketHandler.NETWORK.sendTo(new NemListPacket(event.player.getCapability(CapabilityHandler.NEM, null).getMobs()), (EntityPlayerMP) event.player);
-            IPlayerStats capability = event.player.getCapability(CapabilityHandler.XP, null);
-            SoMPacketHandler.NETWORK.sendTo(new PSPacket(capability.getExperience(), capability.getLevel(), capability.getStartPosition()), (EntityPlayerMP) event.player);
-
-        }
-    }
 
 
     @SubscribeEvent
