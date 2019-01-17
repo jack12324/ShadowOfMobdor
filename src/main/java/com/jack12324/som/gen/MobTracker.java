@@ -18,6 +18,12 @@ import java.util.Random;
 @Mod.EventBusSubscriber
 public class MobTracker {
 
+//    @SubscribeEvent
+//    public static void mobArrow(RenderGameOverlayEvent event){
+//        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("sadf"));//todo need texture)
+//        //todo need to calculate which of 8 directions
+//        drawTexturedModalRect(0, 0, 0, 0,10,10,0);
+//    }
 
     @SubscribeEvent
     public static void playerDied(LivingDeathEvent event) {
