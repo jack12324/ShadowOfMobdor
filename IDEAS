@@ -1,7 +1,8 @@
+Change gui from block to item
+    from item to keybind?
+
 Add a map to track mob locations
     journey map integration?
-    item to summon?
-        quest to summon?
     arrow (gps) to selected mob
 
 Add loot
@@ -12,6 +13,8 @@ Spawning
     random spawn events?
         certain classes only
     option to disable random spawns
+    item to summon?
+    quest to summon?
 
 Update screen
     show all new mobs
@@ -20,4 +23,7 @@ Update screen
 
 Trophy room?
     new dimension?
+
+Mobs besides zombies
+    tied to biome?
     

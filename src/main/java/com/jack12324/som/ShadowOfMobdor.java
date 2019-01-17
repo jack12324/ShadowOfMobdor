@@ -7,6 +7,7 @@ import com.jack12324.som.capabilities.nemesis.NemesisStorage;
 import com.jack12324.som.capabilities.player_stats.IPlayerStats;
 import com.jack12324.som.capabilities.player_stats.PlayerStats;
 import com.jack12324.som.capabilities.player_stats.PlayerStatsStorage;
+import com.jack12324.som.items.SoMItems;
 import com.jack12324.som.network.SoMPacketHandler;
 import com.jack12324.som.proxy.CommonProxy;
 import net.minecraft.block.Block;
@@ -70,10 +71,12 @@ public class ShadowOfMobdor {
 
         @SubscribeEvent public static void registerItems(RegistryEvent.Register<Item> event) {
             SoMBlocks.registerItemBlocks(event.getRegistry());
+            SoMItems.register(event.getRegistry());
         }
 
         @SubscribeEvent public static void registerModels(ModelRegistryEvent event) {
             SoMBlocks.registerModels();
+            SoMItems.registerModels();
         }
 
         // ...

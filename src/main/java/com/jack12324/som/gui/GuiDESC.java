@@ -53,6 +53,9 @@ public class GuiDESC extends GuiScreen {
         String name = mob.getName();
         fontRenderer.drawString(name, x + ((xSize - fontRenderer.getStringWidth(name)) / 2), y + 5,
                         0x404040);
+        String loc = mob.getSpawnLoc().toString();
+        fontRenderer.drawString(loc, x + ((xSize - fontRenderer.getStringWidth(loc)) / 2), y + 10,
+                0x404040);
 
         int col1 = x + 62;       //attribute column 1
         int col2 = x + 139;       //attribute column 2
